@@ -158,45 +158,63 @@ export default function Discover() {
   };
 
   return (
-    <div className="min-h-screen bg-[hsl(var(--discover-bg))]">
+    <div className="min-h-screen bg-gradient-to-br from-[hsl(var(--discover-bg))] to-background relative overflow-hidden">
+      {/* Animated background orbs */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-20 left-1/4 w-96 h-96 bg-gradient-glow-orb animate-float blur-3xl opacity-20"></div>
+        <div className="absolute top-1/3 right-1/4 w-80 h-80 bg-gradient-glow-orb animate-float blur-3xl opacity-15" style={{ animationDelay: '2s' }}></div>
+        <div className="absolute bottom-1/4 left-1/3 w-72 h-72 bg-gradient-glow-orb animate-float blur-3xl opacity-10" style={{ animationDelay: '4s' }}></div>
+      </div>
+
       {/* Theme Toggle */}
       <div className="fixed top-4 right-4 z-50">
         <ThemeToggle />
       </div>
       
-      <div className="max-w-6xl mx-auto p-6 space-y-8">
+      <div className="max-w-6xl mx-auto p-6 space-y-8 relative z-10">
         {/* Header with Back Button */}
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-4 animate-fade-in">
           <Button
             variant="ghost"
             size="sm"
             onClick={() => navigate('/')}
-            className="flex items-center gap-2"
+            className="flex items-center gap-2 hover:scale-105 transition-transform rounded-full"
           >
             <ArrowLeft className="h-4 w-4" />
             Back to Home
           </Button>
         </div>
 
-        <div className="text-center space-y-4">
-          <h1 className="text-4xl font-bold text-foreground">Discover</h1>
+        <div className="text-center space-y-4 animate-fade-in" style={{ animationDelay: '0.1s' }}>
+          <h1 className="text-4xl md:text-5xl font-bold bg-gradient-premium animate-gradient bg-clip-text text-transparent">
+            Discover
+          </h1>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
             Stay updated with the latest news, trends, and discoveries from around the world. Auto-refreshed every 5 minutes.
           </p>
         </div>
 
         {/* Content Tabs */}
-        <Tabs defaultValue="news" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-3">
-            <TabsTrigger value="news" className="flex items-center gap-2">
+        <Tabs defaultValue="news" className="space-y-6 animate-fade-in" style={{ animationDelay: '0.2s' }}>
+          <TabsList className="grid w-full grid-cols-3 bg-card/80 backdrop-blur-lg border border-border/50 p-1 shadow-lg">
+            <TabsTrigger 
+              value="news" 
+              className="flex items-center gap-2 data-[state=active]:bg-gradient-premium data-[state=active]:text-white rounded-lg transition-all"
+            >
               <Newspaper className="h-4 w-4" />
               Latest News
             </TabsTrigger>
-            <TabsTrigger value="trending" className="flex items-center gap-2">
+            <TabsTrigger 
+              value="trending" 
+              className="flex items-center gap-2 data-[state=active]:bg-gradient-premium data-[state=active]:text-white rounded-lg transition-all"
+            >
               <TrendingUp className="h-4 w-4" />
               Trending
             </TabsTrigger>
-            <TabsTrigger value="suggestions" className="flex items-center gap-2">
+            <TabsTrigger 
+              value="suggestions" 
+              className="flex items-center gap-2 data-[state=active]:bg-gradient-premium data-[state=active]:text-white rounded-lg transition-all"
+            >
               <Zap className="h-4 w-4" />
               Suggestions
             </TabsTrigger>
@@ -242,27 +260,32 @@ export default function Discover() {
                 news.map((newsItem, index) => (
                   <Card 
                     key={index} 
-                    className="p-6 hover:shadow-lg transition-all cursor-pointer group animate-fade-in"
+                    className="relative p-6 hover:shadow-glow hover:border-primary/40 transition-all duration-500 cursor-pointer group animate-fade-in border-2 border-border/40 bg-gradient-to-br from-card to-card/95 backdrop-blur-lg overflow-hidden hover:scale-[1.02]"
                     onClick={() => handleNewsClick(newsItem)}
                     style={{ animationDelay: `${index * 0.05}s` }}
                   >
-                    <div className="space-y-4">
+                    <div className="absolute inset-0 bg-gradient-mesh opacity-0 group-hover:opacity-30 transition-opacity pointer-events-none"></div>
+                    <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-premium opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                    
+                    <div className="space-y-4 relative z-10">
                       <div className="flex items-start justify-between gap-4">
                         <div className="flex-1">
                           <div className="flex items-center gap-2 mb-2">
-                            <Badge variant="secondary">{newsItem.category}</Badge>
+                            <Badge variant="secondary" className="group-hover:bg-primary/10 group-hover:text-primary transition-colors">
+                              {newsItem.category}
+                            </Badge>
                             {newsItem.trending && (
-                              <Badge variant="destructive" className="flex items-center gap-1 animate-pulse">
+                              <Badge className="flex items-center gap-1 bg-gradient-premium text-white animate-pulse shadow-sm">
                                 <TrendingUp className="h-3 w-3" />
                                 Trending
                               </Badge>
                             )}
                           </div>
-                          <h3 className="text-lg font-semibold group-hover:text-primary transition-colors">
+                          <h3 className="text-lg font-semibold group-hover:bg-gradient-premium group-hover:bg-clip-text group-hover:text-transparent transition-all">
                             {newsItem.title}
                           </h3>
                         </div>
-                        <ExternalLink className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" />
+                        <ExternalLink className="h-4 w-4 text-muted-foreground group-hover:text-primary group-hover:scale-110 transition-all" />
                       </div>
                       
                       <p className="text-muted-foreground leading-relaxed">
@@ -285,32 +308,37 @@ export default function Discover() {
 
           {/* Trending Tab */}
           <TabsContent value="trending" className="space-y-6">
-            <Card className="p-6">
-              <h3 className="text-xl font-semibold mb-4 flex items-center gap-2">
-                <TrendingUp className="h-5 w-5 text-primary" />
-                Trending Searches
-              </h3>
-              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
-                {trendingQueries.map((query, index) => (
-                  <Button
-                    key={index}
-                    variant="outline"
-                    className="justify-start h-auto p-4 text-left hover:bg-primary/5 animate-fade-in"
-                    style={{ animationDelay: `${index * 0.05}s` }}
-                    onClick={() => {
-                      addRecentSearch(query);
-                      window.dispatchEvent(new CustomEvent('nova:new-chat'));
-                      navigate('/', { state: { initialQuery: query } });
-                    }}
-                  >
-                    <div>
-                      <div className="font-medium">{query}</div>
-                      <div className="text-xs text-muted-foreground mt-1">
-                        #{index + 1} trending
+            <Card className="relative p-6 border-2 border-border/40 shadow-aurora bg-gradient-to-br from-card to-card/95 backdrop-blur-lg overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-mesh opacity-20 pointer-events-none"></div>
+              <div className="relative z-10">
+                <h3 className="text-xl font-semibold mb-4 flex items-center gap-2">
+                  <div className="h-9 w-9 rounded-xl bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center shadow-sm">
+                    <TrendingUp className="h-5 w-5 text-primary" />
+                  </div>
+                  <span className="bg-gradient-premium bg-clip-text text-transparent">Trending Searches</span>
+                </h3>
+                <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                  {trendingQueries.map((query, index) => (
+                    <Button
+                      key={index}
+                      variant="outline"
+                      className="justify-start h-auto p-4 text-left hover:bg-gradient-to-r hover:from-primary/10 hover:to-accent/10 hover:border-primary/40 hover:shadow-md hover:scale-105 transition-all animate-fade-in border-2"
+                      style={{ animationDelay: `${index * 0.05}s` }}
+                      onClick={() => {
+                        addRecentSearch(query);
+                        window.dispatchEvent(new CustomEvent('nova:new-chat'));
+                        navigate('/', { state: { initialQuery: query } });
+                      }}
+                    >
+                      <div>
+                        <div className="font-medium group-hover:bg-gradient-premium group-hover:bg-clip-text group-hover:text-transparent transition-all">{query}</div>
+                        <div className="text-xs text-muted-foreground mt-1">
+                          #{index + 1} trending
+                        </div>
                       </div>
-                    </div>
-                  </Button>
-                ))}
+                    </Button>
+                  ))}
+                </div>
               </div>
             </Card>
           </TabsContent>
@@ -318,24 +346,31 @@ export default function Discover() {
           {/* Suggestions Tab */}
           <TabsContent value="suggestions" className="space-y-6">
             {suggestedSearches.map((categoryData, index) => (
-              <Card key={index} className="p-6 animate-fade-in" style={{ animationDelay: `${index * 0.1}s` }}>
-                <h3 className="text-lg font-semibold mb-4">{categoryData.category}</h3>
-                <div className="grid sm:grid-cols-2 gap-3">
-                  {categoryData.queries.map((query, queryIndex) => (
-                    <Button
-                      key={queryIndex}
-                      variant="ghost"
-                      className="justify-start h-auto p-3 text-left hover:bg-muted"
-                      onClick={() => {
-                        addRecentSearch(query);
-                        window.dispatchEvent(new CustomEvent('nova:new-chat'));
-                        navigate('/', { state: { initialQuery: query } });
-                      }}
-                    >
-                      <Search className="h-4 w-4 mr-2 text-primary" />
-                      {query}
-                    </Button>
-                  ))}
+              <Card 
+                key={index} 
+                className="relative p-6 animate-fade-in border-2 border-border/40 shadow-aurora bg-gradient-to-br from-card to-card/95 backdrop-blur-lg overflow-hidden hover:shadow-glow hover:border-primary/30 transition-all duration-500" 
+                style={{ animationDelay: `${index * 0.1}s` }}
+              >
+                <div className="absolute inset-0 bg-gradient-mesh opacity-20 pointer-events-none"></div>
+                <div className="relative z-10">
+                  <h3 className="text-lg font-semibold mb-4 bg-gradient-premium bg-clip-text text-transparent">{categoryData.category}</h3>
+                  <div className="grid sm:grid-cols-2 gap-3">
+                    {categoryData.queries.map((query, queryIndex) => (
+                      <Button
+                        key={queryIndex}
+                        variant="ghost"
+                        className="justify-start h-auto p-3 text-left hover:bg-gradient-to-r hover:from-primary/10 hover:to-accent/10 hover:scale-105 transition-all rounded-xl border border-transparent hover:border-primary/20"
+                        onClick={() => {
+                          addRecentSearch(query);
+                          window.dispatchEvent(new CustomEvent('nova:new-chat'));
+                          navigate('/', { state: { initialQuery: query } });
+                        }}
+                      >
+                        <Search className="h-4 w-4 mr-2 text-primary" />
+                        {query}
+                      </Button>
+                    ))}
+                  </div>
                 </div>
               </Card>
             ))}

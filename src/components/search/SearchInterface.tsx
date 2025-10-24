@@ -200,11 +200,12 @@ export function SearchInterface() {
                 return (
                   <div key={message.id} className="animate-fade-in">
                     {message.type === 'user' ? (
-                      <div className="flex items-start gap-2 md:gap-4 mb-6 md:mb-10">
-                        <div className="flex-shrink-0 h-9 w-9 md:h-12 md:w-12 rounded-2xl bg-gradient-premium flex items-center justify-center shadow-lg shadow-primary/25">
-                          <Sparkles className="h-4 w-4 md:h-6 md:w-6 text-white" />
+                      <div className="relative flex items-start gap-2 md:gap-4 mb-6 md:mb-10 group">
+                        <div className="absolute -inset-2 bg-gradient-premium opacity-0 group-hover:opacity-5 blur-xl transition-opacity rounded-2xl pointer-events-none"></div>
+                        <div className="relative flex-shrink-0 h-9 w-9 md:h-12 md:w-12 rounded-2xl bg-gradient-premium animate-gradient flex items-center justify-center shadow-glow hover:scale-110 transition-transform">
+                          <Sparkles className="h-4 w-4 md:h-6 md:w-6 text-white drop-shadow-lg" />
                         </div>
-                        <div className="flex-1 pt-1 md:pt-3 min-w-0">
+                        <div className="relative flex-1 pt-1 md:pt-3 min-w-0">
                           <p className="text-base md:text-xl font-semibold text-foreground break-words leading-relaxed">{message.content}</p>
                         </div>
                       </div>
@@ -243,10 +244,11 @@ export function SearchInterface() {
       
       {/* Fixed Search Input - Always visible at bottom */}
       {hasSearched && (
-        <div className={`fixed bottom-0 right-0 z-40 border-t border-border/80 bg-background/95 backdrop-blur-xl shadow-2xl transition-all duration-300 ${
+        <div className={`fixed bottom-0 right-0 z-40 border-t border-border/60 bg-gradient-to-t from-background via-background/98 to-background/95 backdrop-blur-2xl shadow-2xl transition-all duration-300 ${
           isMobile ? 'left-0' : (collapsed ? 'left-16' : 'left-64')
         }`}>
-          <div className="max-w-3xl mx-auto px-3 md:px-4 py-3 md:py-4">
+          <div className="absolute inset-0 bg-gradient-mesh opacity-20 pointer-events-none"></div>
+          <div className="max-w-3xl mx-auto px-3 md:px-4 py-3 md:py-4 relative z-10">
             <NovaSearchInput 
               onSearch={handleSearch} 
               isLoading={isSearching}

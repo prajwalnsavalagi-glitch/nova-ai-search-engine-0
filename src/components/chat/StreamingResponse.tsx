@@ -203,24 +203,29 @@ export function StreamingResponse({
     <div className="space-y-5 md:space-y-6">
       {/* AI Quick Answer Badge */}
       {!isStreaming && content && (
-        <div className="flex items-center gap-2 text-sm font-medium text-primary animate-fade-in">
-          <div className="h-2 w-2 rounded-full bg-primary animate-pulse" />
-          <span>AI Answer</span>
+        <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-primary/10 to-accent/10 border border-primary/20 w-fit animate-fade-in shadow-sm">
+          <div className="h-2 w-2 rounded-full bg-gradient-premium animate-pulse shadow-glow" />
+          <span className="text-sm font-semibold bg-gradient-premium bg-clip-text text-transparent">AI Answer</span>
         </div>
       )}
 
       {/* Main Response */}
-      <Card className="relative overflow-hidden border-2 border-border/50 shadow-lg hover:shadow-xl transition-all duration-300 bg-gradient-to-br from-card/95 to-card/80 backdrop-blur-sm">
-        {/* Subtle gradient overlay */}
-        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-premium opacity-80" />
+      <Card className="relative overflow-hidden border-2 border-border/40 shadow-aurora hover:shadow-glow hover:border-primary/30 transition-all duration-500 bg-gradient-to-br from-card via-card/95 to-card/90 backdrop-blur-lg group">
+        {/* Animated gradient overlay */}
+        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-premium animate-gradient opacity-90" />
+        <div className="absolute inset-0 bg-gradient-mesh opacity-30 pointer-events-none"></div>
         
-        <div className="p-6 md:p-8 space-y-6">
+        {/* Floating orb effects */}
+        <div className="absolute top-10 right-10 w-32 h-32 bg-gradient-glow-orb opacity-20 blur-3xl animate-float pointer-events-none"></div>
+        <div className="absolute bottom-10 left-10 w-40 h-40 bg-gradient-glow-orb opacity-10 blur-3xl animate-float pointer-events-none" style={{ animationDelay: '2s' }}></div>
+        
+        <div className="p-6 md:p-8 space-y-6 relative z-10">
           {/* Response Content */}
           <div className="prose prose-base md:prose-lg max-w-none dark:prose-invert">
               <>
                 <div 
                   dangerouslySetInnerHTML={{ 
-                    __html: formatContent(displayedContent) + (isStreaming ? '<span class="inline-flex ml-1 w-2 h-5 bg-primary animate-pulse rounded">​</span>' : '')
+                    __html: formatContent(displayedContent) + (isStreaming ? '<span class="inline-flex ml-1 w-2 h-5 bg-gradient-premium animate-pulse rounded shadow-sm">​</span>' : '')
                   }}
                   className="text-foreground/95 leading-relaxed tracking-wide"
                 />
@@ -228,12 +233,12 @@ export function StreamingResponse({
           </div>
 
           {/* Action Buttons */}
-          <div className="flex items-center gap-2 md:gap-3 pt-6 border-t border-border/50 flex-wrap">
+          <div className="flex items-center gap-2 md:gap-3 pt-6 border-t border-border/30 flex-wrap">
             <Button
               variant="ghost"
               size="sm"
               onClick={copyToClipboard}
-              className="h-9 px-4 hover:bg-primary/10 hover:text-primary transition-all"
+              className="h-9 px-4 rounded-full hover:bg-gradient-to-r hover:from-primary/10 hover:to-accent/10 hover:text-primary transition-all hover:scale-105 hover:shadow-sm"
             >
               <Copy className="h-4 w-4 mr-2" />
               Copy
@@ -243,7 +248,7 @@ export function StreamingResponse({
               variant="ghost"
               size="sm"
               onClick={toggleSpeech}
-              className="h-9 px-4 hover:bg-primary/10 hover:text-primary transition-all"
+              className="h-9 px-4 rounded-full hover:bg-gradient-to-r hover:from-primary/10 hover:to-accent/10 hover:text-primary transition-all hover:scale-105 hover:shadow-sm"
               disabled={!speechSynthesis || isStreaming}
             >
               {isReading ? (
@@ -258,7 +263,7 @@ export function StreamingResponse({
               variant="ghost"
               size="sm"
               onClick={shareResponse}
-              className="h-9 px-4 hover:bg-primary/10 hover:text-primary transition-all"
+              className="h-9 px-4 rounded-full hover:bg-gradient-to-r hover:from-primary/10 hover:to-accent/10 hover:text-primary transition-all hover:scale-105 hover:shadow-sm"
               disabled={isStreaming}
             >
               <Share className="h-4 w-4 mr-2" />
@@ -270,7 +275,7 @@ export function StreamingResponse({
                 variant="ghost"
                 size="sm"
                 onClick={onRegenerateResponse}
-                className="h-9 px-4 hover:bg-accent/10 hover:text-accent-foreground transition-all ml-auto"
+                className="h-9 px-4 rounded-full hover:bg-gradient-to-r hover:from-accent/10 hover:to-primary/10 hover:text-accent-foreground transition-all hover:scale-105 hover:shadow-sm ml-auto"
                 disabled={isStreaming}
               >
                 <RotateCcw className="h-4 w-4 mr-2" />
@@ -283,20 +288,21 @@ export function StreamingResponse({
 
       {/* Sources Section */}
       {sources.length > 0 && (
-        <Card className="border-2 border-border/50 shadow-md overflow-hidden bg-card/95 backdrop-blur-sm">
-          <details className="group">
-            <summary className="p-5 md:p-6 font-semibold flex items-center gap-3 cursor-pointer hover:bg-muted/30 transition-all">
-              <div className="h-8 w-8 rounded-lg bg-primary/10 flex items-center justify-center">
+        <Card className="relative border-2 border-border/40 shadow-aurora overflow-hidden bg-gradient-to-br from-card to-card/95 backdrop-blur-lg hover:shadow-glow hover:border-primary/30 transition-all duration-500 group">
+          <div className="absolute inset-0 bg-gradient-mesh opacity-20 pointer-events-none"></div>
+          <details className="group/details relative z-10">
+            <summary className="p-5 md:p-6 font-semibold flex items-center gap-3 cursor-pointer hover:bg-gradient-to-r hover:from-primary/5 hover:to-accent/5 transition-all">
+              <div className="h-9 w-9 rounded-xl bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform">
                 <ExternalLink className="h-4 w-4 text-primary" />
               </div>
-              <span className="text-base">Sources ({Math.min(sources.length, 5)})</span>
-              <ChevronDown className="h-5 w-5 ml-auto group-open:rotate-180 transition-transform text-muted-foreground" />
+              <span className="text-base bg-gradient-premium bg-clip-text text-transparent">Sources ({Math.min(sources.length, 5)})</span>
+              <ChevronDown className="h-5 w-5 ml-auto group-open/details:rotate-180 transition-transform text-muted-foreground" />
             </summary>
             <div className="px-5 pb-5 md:px-6 md:pb-6 space-y-3">
               {sources.slice(0, 5).map((source, index) => (
                 <div
                   key={index}
-                  className="group/source border-2 border-border/50 rounded-xl p-4 md:p-5 hover:border-primary/30 hover:bg-primary/5 transition-all duration-200"
+                  className="group/source relative border-2 border-border/40 rounded-xl p-4 md:p-5 hover:border-primary/40 hover:bg-gradient-to-r hover:from-primary/5 hover:to-accent/5 transition-all duration-300 hover:scale-[1.02] hover:shadow-md overflow-hidden"
                 >
                   <div className="flex items-start justify-between gap-4">
                     <div className="flex-1 min-w-0">
@@ -341,28 +347,33 @@ export function StreamingResponse({
 
       {/* Images Section */}
       {images.length > 0 && (
-        <Card className="border-2 border-border/50 shadow-md p-5 md:p-6 bg-card/95 backdrop-blur-sm">
-          <h3 className="font-semibold text-base mb-5 flex items-center gap-3">
-            <div className="h-8 w-8 rounded-lg bg-accent/10 flex items-center justify-center">
-              <ImageIcon className="h-4 w-4 text-accent-foreground" />
-            </div>
-            <span>Related Images ({images.length})</span>
-          </h3>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 md:gap-4">
-            {images.map((image, index) => (
-              <div
-                key={index}
-                className="group aspect-square rounded-xl overflow-hidden bg-muted border-2 border-border/50 hover:border-primary/50 transition-all duration-200 cursor-pointer hover:shadow-lg"
-                onClick={() => onMediaClick ? onMediaClick(image, 'image', `Image ${index + 1}`) : window.open(image, '_blank')}
-              >
-                <img
-                  src={image}
-                  alt={`Related image ${index + 1}`}
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
-                  loading="lazy"
-                />
+        <Card className="relative border-2 border-border/40 shadow-aurora p-5 md:p-6 bg-gradient-to-br from-card to-card/95 backdrop-blur-lg hover:shadow-glow hover:border-primary/30 transition-all duration-500 overflow-hidden group">
+          <div className="absolute inset-0 bg-gradient-mesh opacity-20 pointer-events-none"></div>
+          <div className="relative z-10">
+            <h3 className="font-semibold text-base mb-5 flex items-center gap-3">
+              <div className="h-9 w-9 rounded-xl bg-gradient-to-br from-accent/20 to-primary/20 flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform">
+                <ImageIcon className="h-4 w-4 text-accent-foreground" />
               </div>
-            ))}
+              <span className="bg-gradient-premium bg-clip-text text-transparent">Related Images ({images.length})</span>
+            </h3>
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 md:gap-4">
+              {images.map((image, index) => (
+                <div
+                  key={index}
+                  className="group/img relative aspect-square rounded-xl overflow-hidden bg-muted border-2 border-border/40 hover:border-primary/50 transition-all duration-300 cursor-pointer hover:shadow-glow hover:scale-105 animate-fade-in"
+                  onClick={() => onMediaClick ? onMediaClick(image, 'image', `Image ${index + 1}`) : window.open(image, '_blank')}
+                  style={{ animationDelay: `${index * 0.05}s` }}
+                >
+                  <div className="absolute inset-0 bg-gradient-premium opacity-0 group-hover/img:opacity-10 transition-opacity z-10 pointer-events-none"></div>
+                  <img
+                    src={image}
+                    alt={`Related image ${index + 1}`}
+                    className="w-full h-full object-cover group-hover/img:scale-110 transition-transform duration-500"
+                    loading="lazy"
+                  />
+                </div>
+              ))}
+            </div>
           </div>
         </Card>
       )}
