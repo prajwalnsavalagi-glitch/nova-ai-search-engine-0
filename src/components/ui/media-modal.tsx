@@ -33,23 +33,28 @@ export function MediaModal({ isOpen, onClose, mediaUrl, mediaType, title }: Medi
   };
 
   const handleShare = async () => {
-    if (navigator.share) {
-      try {
-        await navigator.share({
-          title: title || 'Media',
-          url: mediaUrl,
-        });
-      } catch (error) {
-        if ((error as Error).name !== 'AbortError') {
-          toast.error('Share failed');
+    // Try copying to clipboard first as it's more reliable
+    try {
+      await navigator.clipboard.writeText(mediaUrl);
+      toast.success('Link copied to clipboard!');
+    } catch (error) {
+      // If clipboard fails, try native share
+      if (navigator.share) {
+        try {
+          const blob = await fetch(mediaUrl).then(r => r.blob());
+          const file = new File([blob], title || 'media', { type: blob.type });
+          await navigator.share({
+            title: title || 'Media',
+            files: [file],
+          });
+          toast.success('Shared successfully!');
+        } catch (shareError) {
+          if ((shareError as Error).name !== 'AbortError') {
+            toast.error('Failed to share. Try downloading instead.');
+          }
         }
-      }
-    } else {
-      try {
-        await navigator.clipboard.writeText(mediaUrl);
-        toast.success('Link copied to clipboard!');
-      } catch (error) {
-        toast.error('Failed to copy link');
+      } else {
+        toast.error('Sharing not supported on this device');
       }
     }
   };

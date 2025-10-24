@@ -86,7 +86,11 @@ export default function Discover() {
 
   useEffect(() => {
     fetchLatestNews();
-    const interval = setInterval(fetchLatestNews, 300000); // Refresh every 5 minutes
+    // Refresh every 5 minutes with more aggressive cache busting
+    const interval = setInterval(() => {
+      console.log('Auto-refreshing news...');
+      fetchLatestNews();
+    }, 300000);
     return () => clearInterval(interval);
   }, []);
 
@@ -94,39 +98,50 @@ export default function Discover() {
     try {
       setIsLoadingNews(true);
       setNewsError(null);
+      
+      // Add timestamp to force fresh results
+      const timestamp = Date.now();
       const newsQueries = [
-        "latest technology news today",
-        "breaking science news", 
-        "business news headlines today",
-        "health medical news"
+        `latest technology news ${new Date().toISOString().split('T')[0]}`,
+        `breaking science news ${new Date().toISOString().split('T')[0]}`, 
+        `business headlines ${new Date().toISOString().split('T')[0]}`,
+        `health medical news ${new Date().toISOString().split('T')[0]}`
       ];
       
       const newsResults = await Promise.all(
         newsQueries.map(async (query) => {
           const { data, error } = await supabase.functions.invoke('search', {
-            body: { query }
+            body: { 
+              query,
+              timestamp // Include timestamp to prevent caching
+            }
           });
           if (error) throw error;
           return data;
         })
       );
       
-      const allNews = newsResults.flatMap((result) => 
-        (result?.sources || []).slice(0, 3).map((article: any) => ({
+      const allNews = newsResults.flatMap((result, categoryIndex) => {
+        const categories = ["Technology", "Science", "Business", "Health"];
+        return (result?.sources || []).slice(0, 3).map((article: any) => ({
           title: article.title || 'No title',
           description: (article.content || '').slice(0, 200) + '...',
-          category: "News",
-          time: "Recent",
+          category: categories[categoryIndex] || "News",
+          time: new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }),
           source: article.domain || 'Unknown',
           trending: Math.random() > 0.6,
-          url: article.url
+          url: article.url,
+          fetchedAt: timestamp // Add timestamp to track when fetched
         }))
-      );
+      });
       
       if (allNews.length === 0) {
         setNewsError("No news articles found. Please try again later.");
       } else {
-        setNews(allNews.slice(0, 12));
+        // Shuffle to show variety and slice to 12
+        const shuffled = allNews.sort(() => Math.random() - 0.5).slice(0, 12);
+        setNews(shuffled);
+        console.log(`Fetched ${shuffled.length} news articles at ${new Date().toLocaleTimeString()}`);
       }
     } catch (error) {
       console.error('Failed to fetch news:', error);
