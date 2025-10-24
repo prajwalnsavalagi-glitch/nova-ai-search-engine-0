@@ -81,9 +81,12 @@ export default {
 			boxShadow: {
 				'nova': 'var(--shadow-lg)',
 				'glow': 'var(--shadow-glow)',
+				'electric': 'var(--shadow-electric)',
+				'aurora': 'var(--shadow-aurora)',
 				'sm': 'var(--shadow-sm)',
 				'md': 'var(--shadow-md)',
-				'lg': 'var(--shadow-lg)'
+				'lg': 'var(--shadow-lg)',
+				'xl': 'var(--shadow-xl)'
 			},
 			backgroundImage: {
 				'gradient-nova': 'var(--gradient-nova)',

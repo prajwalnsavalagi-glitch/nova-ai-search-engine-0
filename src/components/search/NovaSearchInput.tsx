@@ -164,10 +164,11 @@ export function NovaSearchInput({ onSearch, isLoading = false }: NovaSearchInput
 
       {/* Main Search Bar */}
       <div className="relative group">
-        <div className="absolute inset-0 bg-gradient-premium rounded-2xl md:rounded-3xl opacity-0 group-hover:opacity-10 blur-xl transition-opacity duration-300" />
+        <div className="absolute inset-0 bg-gradient-premium rounded-2xl md:rounded-3xl opacity-0 group-hover:opacity-20 blur-2xl transition-all duration-500 group-focus-within:opacity-30" />
+        <div className="absolute inset-0 bg-gradient-electric rounded-2xl md:rounded-3xl opacity-0 group-focus-within:opacity-10 blur-xl transition-opacity duration-300" />
         
-        <div className="relative flex items-center gap-2 md:gap-3 bg-background/95 backdrop-blur-sm border-2 border-border/50 rounded-2xl md:rounded-3xl px-4 md:px-6 py-3 md:py-4 shadow-lg hover:shadow-2xl hover:border-primary/30 transition-all duration-300 focus-within:border-primary/50 focus-within:shadow-2xl">
-          <Search className="h-5 w-5 md:h-6 md:w-6 text-primary flex-shrink-0" />
+        <div className="relative flex items-center gap-2 md:gap-3 bg-background/95 backdrop-blur-sm border-2 border-border/50 rounded-2xl md:rounded-3xl px-4 md:px-6 py-3 md:py-4 shadow-lg hover:shadow-aurora hover:border-primary/40 transition-all duration-300 focus-within:border-primary/60 focus-within:shadow-glow focus-within:scale-[1.02]">
+          <Search className="h-5 w-5 md:h-6 md:w-6 text-primary flex-shrink-0 group-focus-within:scale-110 transition-transform duration-300" />
           
           <Textarea
             ref={textareaRef}
@@ -235,16 +236,19 @@ export function NovaSearchInput({ onSearch, isLoading = false }: NovaSearchInput
               disabled={!input.trim() || isLoading}
               size="icon"
               className={cn(
-                "h-8 w-8 md:h-10 md:w-10 rounded-full flex-shrink-0 transition-all duration-300",
+                "h-8 w-8 md:h-10 md:w-10 rounded-full flex-shrink-0 transition-all duration-300 relative overflow-hidden",
                 input.trim() && !isLoading
-                  ? "bg-gradient-premium hover:scale-110 hover:shadow-lg hover:shadow-primary/30"
+                  ? "bg-gradient-premium animate-gradient hover:scale-110 hover:shadow-glow hover:rotate-12"
                   : "opacity-50 cursor-not-allowed"
               )}
             >
+              {input.trim() && !isLoading && (
+                <div className="absolute inset-0 bg-gradient-electric animate-aurora opacity-50"></div>
+              )}
               {isLoading ? (
-                <Loader2 className="h-4 w-4 md:h-5 md:w-5 animate-spin" />
+                <Loader2 className="h-4 w-4 md:h-5 md:w-5 animate-spin relative z-10" />
               ) : (
-                <ArrowUp className="h-4 w-4 md:h-5 md:w-5" />
+                <ArrowUp className="h-4 w-4 md:h-5 md:w-5 relative z-10" />
               )}
             </Button>
           </div>
