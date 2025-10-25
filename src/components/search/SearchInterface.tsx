@@ -55,8 +55,19 @@ export function SearchInterface() {
       setCurrentImages([]);
     };
 
+    const handleExecuteSearch = (event: CustomEvent) => {
+      const searchQuery = event.detail;
+      if (searchQuery) {
+        handleSearch(searchQuery);
+      }
+    };
+
     window.addEventListener('nova:new-chat', handleNewChat);
-    return () => window.removeEventListener('nova:new-chat', handleNewChat);
+    window.addEventListener('nova:execute-search', handleExecuteSearch as EventListener);
+    return () => {
+      window.removeEventListener('nova:new-chat', handleNewChat);
+      window.removeEventListener('nova:execute-search', handleExecuteSearch as EventListener);
+    };
   }, []);
   
   const {
@@ -71,6 +82,8 @@ export function SearchInterface() {
     
     // Add to recent searches
     addRecentSearch(searchQuery);
+    // Notify sidebar to update
+    window.dispatchEvent(new CustomEvent('nova:search-added'));
     
     let conversation = currentConversation;
     if (!conversation || conversation.mode !== 'search') {

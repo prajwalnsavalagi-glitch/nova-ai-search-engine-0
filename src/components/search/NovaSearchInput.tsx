@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
-import { SearchAutocomplete } from "./SearchAutocomplete";
 
 interface AttachmentPayload {
   name: string;
@@ -21,7 +20,6 @@ interface NovaSearchInputProps {
 export function NovaSearchInput({ onSearch, isLoading = false }: NovaSearchInputProps) {
   const [input, setInput] = useState("");
   const [attachedFiles, setAttachedFiles] = useState<AttachmentPayload[]>([]);
-  const [showAutocomplete, setShowAutocomplete] = useState(false);
   const [isRecording, setIsRecording] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -30,16 +28,9 @@ export function NovaSearchInput({ onSearch, isLoading = false }: NovaSearchInput
   const handleSubmit = async () => {
     if (!input.trim() || isLoading) return;
     
-    setShowAutocomplete(false);
     onSearch(input, attachedFiles.length > 0 ? attachedFiles : undefined);
     setInput("");
     setAttachedFiles([]);
-  };
-
-  const handleSuggestionSelect = (suggestion: string) => {
-    setInput(suggestion);
-    setShowAutocomplete(false);
-    textareaRef.current?.focus();
   };
 
   const handleKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
@@ -172,8 +163,6 @@ export function NovaSearchInput({ onSearch, isLoading = false }: NovaSearchInput
           
           <Textarea
             ref={textareaRef}
-            onFocus={() => setShowAutocomplete(true)}
-            onBlur={() => setTimeout(() => setShowAutocomplete(false), 200)}
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={handleKeyDown}
@@ -253,13 +242,6 @@ export function NovaSearchInput({ onSearch, isLoading = false }: NovaSearchInput
             </Button>
           </div>
         </div>
-
-        {/* Autocomplete Dropdown */}
-        <SearchAutocomplete 
-          query={input}
-          onSelect={handleSuggestionSelect}
-          show={showAutocomplete}
-        />
       </div>
     </div>
   );

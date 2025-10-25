@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { 
   Home, 
   Compass, 
@@ -11,6 +11,7 @@ import {
   Clock,
   Bot,
   Settings,
+  X,
 } from "lucide-react";
 import { NavLink, useLocation } from "react-router-dom";
 
@@ -54,8 +55,30 @@ export function NovaSidebar() {
   const [showSearchSettings, setShowSearchSettings] = useState(false);
   const [showChatBotSettings, setShowChatBotSettings] = useState(false);
   const [chatBotSettings, setChatBotSettings] = useState<ChatBotSettingsData>(loadChatBotSettings());
+  const [showRecentSearches, setShowRecentSearches] = useState(false);
+  const [recentSearches, setRecentSearches] = useState<string[]>([]);
   
   const collapsed = state === "collapsed";
+
+  useEffect(() => {
+    const loadRecentSearches = () => {
+      const saved = localStorage.getItem('nova-recent-searches');
+      if (saved) {
+        setRecentSearches(JSON.parse(saved));
+      }
+    };
+    loadRecentSearches();
+    
+    // Listen for storage changes
+    const handleStorageChange = () => loadRecentSearches();
+    window.addEventListener('storage', handleStorageChange);
+    window.addEventListener('nova:search-added', handleStorageChange);
+    
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+      window.removeEventListener('nova:search-added', handleStorageChange);
+    };
+  }, []);
 
   const isActive = (path: string) => currentPath === path;
 
@@ -97,6 +120,32 @@ export function NovaSidebar() {
   const handleClearChat = () => {
     createNewConversation('New Search', 'search');
     toast({ description: 'Search cleared' });
+  };
+
+  const handleRecentSearchClick = (query: string) => {
+    // Navigate to home and trigger search
+    if (currentPath !== "/") {
+      window.location.href = "/";
+    }
+    // Dispatch event to trigger search
+    window.dispatchEvent(new CustomEvent('nova:execute-search', { detail: query }));
+    setShowRecentSearches(false);
+    if (isMobile) {
+      setOpen(false);
+    }
+  };
+
+  const removeRecentSearch = (index: number, e: React.MouseEvent) => {
+    e.stopPropagation();
+    const updated = recentSearches.filter((_, i) => i !== index);
+    setRecentSearches(updated);
+    localStorage.setItem('nova-recent-searches', JSON.stringify(updated));
+  };
+
+  const clearAllRecentSearches = () => {
+    setRecentSearches([]);
+    localStorage.removeItem('nova-recent-searches');
+    toast({ description: 'Recent searches cleared' });
   };
 
   return (
@@ -161,7 +210,70 @@ export function NovaSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
 
-        {/* Chat history hidden per user request */}
+        {/* Recent Searches Section */}
+        {!collapsed && (
+          <SidebarGroup>
+            <div className="px-2">
+              <Button
+                variant="ghost"
+                onClick={() => setShowRecentSearches(!showRecentSearches)}
+                className="w-full justify-between mb-2 hover:bg-secondary/50"
+              >
+                <div className="flex items-center gap-2">
+                  <Clock className="h-4 w-4 text-primary" />
+                  <span className="text-sm font-medium">Recent Searches</span>
+                </div>
+                {showRecentSearches ? (
+                  <ChevronDown className="h-4 w-4" />
+                ) : (
+                  <ChevronRight className="h-4 w-4" />
+                )}
+              </Button>
+              
+              {showRecentSearches && recentSearches.length > 0 && (
+                <div className="space-y-1">
+                  <div className="flex justify-end mb-2">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={clearAllRecentSearches}
+                      className="h-7 px-2 text-xs text-muted-foreground hover:text-foreground"
+                    >
+                      Clear all
+                    </Button>
+                  </div>
+                  <ScrollArea className="h-[200px]">
+                    <div className="space-y-1 pr-3">
+                      {recentSearches.map((search, index) => (
+                        <button
+                          key={index}
+                          onClick={() => handleRecentSearchClick(search)}
+                          className="group w-full flex items-center justify-between gap-2 px-3 py-2 text-sm rounded-lg bg-secondary/50 hover:bg-secondary border border-border/50 hover:border-primary/50 transition-all duration-200 hover:scale-[1.02]"
+                        >
+                          <span className="text-foreground/80 group-hover:text-foreground truncate text-left flex-1">
+                            {search}
+                          </span>
+                          <button
+                            onClick={(e) => removeRecentSearch(index, e)}
+                            className="opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0"
+                          >
+                            <X className="h-3 w-3 text-muted-foreground hover:text-destructive" />
+                          </button>
+                        </button>
+                      ))}
+                    </div>
+                  </ScrollArea>
+                </div>
+              )}
+              
+              {showRecentSearches && recentSearches.length === 0 && (
+                <p className="text-xs text-muted-foreground px-3 py-2">
+                  No recent searches yet
+                </p>
+              )}
+            </div>
+          </SidebarGroup>
+        )}
       </SidebarContent>
 
       {/* Settings and Theme Toggle at Bottom */}
