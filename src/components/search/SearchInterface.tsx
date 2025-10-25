@@ -43,6 +43,13 @@ export function SearchInterface() {
       handleSearch(state.initialQuery);
       window.history.replaceState({}, ''); // Clear the state
     }
+    
+    // Check for pending search from recent searches
+    const pendingSearch = sessionStorage.getItem('nova:pending-search');
+    if (pendingSearch) {
+      sessionStorage.removeItem('nova:pending-search');
+      setTimeout(() => handleSearch(pendingSearch), 100);
+    }
   }, [location]);
 
   useEffect(() => {

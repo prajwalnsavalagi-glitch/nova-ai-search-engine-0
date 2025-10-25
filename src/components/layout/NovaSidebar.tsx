@@ -123,15 +123,18 @@ export function NovaSidebar() {
   };
 
   const handleRecentSearchClick = (query: string) => {
-    // Navigate to home and trigger search
-    if (currentPath !== "/") {
-      window.location.href = "/";
-    }
-    // Dispatch event to trigger search
-    window.dispatchEvent(new CustomEvent('nova:execute-search', { detail: query }));
-    setShowRecentSearches(false);
+    // Close sidebar on mobile
     if (isMobile) {
       setOpen(false);
+    }
+    
+    // Navigate to home first if needed, then trigger search
+    if (currentPath !== "/") {
+      sessionStorage.setItem('nova:pending-search', query);
+      window.location.href = "/";
+    } else {
+      // Already on home, execute immediately
+      window.dispatchEvent(new CustomEvent('nova:execute-search', { detail: query }));
     }
   };
 
@@ -211,22 +214,23 @@ export function NovaSidebar() {
         </SidebarGroup>
 
         {/* Recent Searches Section */}
-        {!collapsed && (
-          <SidebarGroup>
+        {!collapsed && recentSearches.length > 0 && (
+          <SidebarGroup className="border-t border-border/50 pt-2">
             <div className="px-2">
               <Button
                 variant="ghost"
                 onClick={() => setShowRecentSearches(!showRecentSearches)}
-                className="w-full justify-between mb-2 hover:bg-secondary/50"
+                className="w-full justify-between mb-2 hover:bg-secondary/50 rounded-lg"
               >
                 <div className="flex items-center gap-2">
-                  <Clock className="h-4 w-4 text-primary" />
+                  <Clock className="h-4 w-4 text-primary animate-pulse" />
                   <span className="text-sm font-medium">Recent Searches</span>
+                  <span className="text-xs text-muted-foreground">({recentSearches.length})</span>
                 </div>
                 {showRecentSearches ? (
-                  <ChevronDown className="h-4 w-4" />
+                  <ChevronDown className="h-4 w-4 text-muted-foreground" />
                 ) : (
-                  <ChevronRight className="h-4 w-4" />
+                  <ChevronRight className="h-4 w-4 text-muted-foreground" />
                 )}
               </Button>
               
