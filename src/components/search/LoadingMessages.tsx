@@ -24,14 +24,28 @@ export function LoadingMessages() {
   }, []);
 
   return (
-    <div className="flex items-center gap-3 justify-center py-8 animate-fade-in">
+    <div className="flex flex-col items-center gap-4 justify-center py-8 animate-fade-in">
       <div className="relative">
-        <Sparkles className="h-6 w-6 text-primary animate-pulse" />
-        <div className="absolute inset-0 h-6 w-6 bg-primary/20 rounded-full animate-ping" />
+        <div className="absolute inset-0 bg-gradient-premium rounded-full blur-xl opacity-60 animate-pulse"></div>
+        <div className="relative bg-gradient-premium animate-gradient p-4 rounded-full shadow-glow">
+          <Sparkles className="h-6 w-6 text-white animate-pulse" />
+        </div>
+        <div className="absolute inset-0 h-full w-full bg-primary/20 rounded-full animate-ping" />
       </div>
-      <p className="text-base md:text-lg text-muted-foreground animate-pulse font-medium">
-        {loadingMessages[messageIndex]}
-      </p>
+      <div className="relative px-6 py-3 rounded-2xl bg-card/50 backdrop-blur-sm border border-border/50 shadow-glow">
+        <p className="text-base md:text-lg text-foreground animate-pulse font-medium bg-gradient-premium animate-gradient bg-clip-text text-transparent">
+          {loadingMessages[messageIndex]}
+        </p>
+      </div>
+      <div className="flex gap-1.5">
+        {[0, 1, 2].map((i) => (
+          <div 
+            key={i} 
+            className="h-2 w-2 rounded-full bg-primary animate-bounce"
+            style={{ animationDelay: `${i * 0.15}s` }}
+          />
+        ))}
+      </div>
     </div>
   );
 }

@@ -28,14 +28,16 @@ export function QuickActions({ onSearch, className }: QuickActionsProps) {
           <button
             key={index}
             onClick={() => onSearch(suggestion.text)}
-            className="group px-4 py-3 rounded-xl bg-card/50 backdrop-blur-sm border border-border/50 hover:border-primary/50 hover:bg-primary/5 hover:shadow-md transition-all duration-300 hover:scale-105 active:scale-95"
+            className="group relative px-4 py-3 rounded-xl bg-card/50 backdrop-blur-sm border border-border/50 hover:border-primary/50 hover:bg-card/80 hover:shadow-aurora transition-all duration-300 hover:scale-105 hover:-translate-y-1 active:scale-95 overflow-hidden"
           >
-            <div className="flex flex-col items-start gap-1.5">
-              <span className="text-2xl">{suggestion.emoji}</span>
-              <span className="text-xs md:text-sm text-left font-medium text-foreground/90 line-clamp-2 group-hover:text-primary transition-colors">
+            <div className="absolute inset-0 bg-gradient-premium opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
+            <div className="flex flex-col items-start gap-1.5 relative z-10">
+              <span className="text-2xl group-hover:scale-125 group-hover:rotate-12 transition-transform duration-300 inline-block">{suggestion.emoji}</span>
+              <span className="text-xs md:text-sm text-left font-medium text-foreground/90 line-clamp-2 group-hover:text-primary transition-colors duration-300">
                 {suggestion.text}
               </span>
             </div>
+            <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-premium scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
           </button>
         ))}
       </div>

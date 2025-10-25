@@ -18,26 +18,40 @@ export function WelcomeScreen({ onSearch }: WelcomeScreenProps) {
       <div className="text-center space-y-2 md:space-y-4 max-w-4xl relative z-10">
         {/* Logo */}
         <div className="flex items-center justify-center gap-3 md:gap-4 mb-2 md:mb-4">
-          <div className="relative animate-float">
-            <div className="absolute inset-0 bg-gradient-premium rounded-2xl blur-2xl opacity-60 animate-pulse"></div>
-            <div className="absolute inset-0 bg-gradient-premium rounded-2xl blur-xl opacity-40 animate-glow"></div>
-            <div className="relative bg-gradient-premium animate-gradient p-3 md:p-5 rounded-2xl shadow-glow">
-              <Sparkles className="h-8 w-8 md:h-14 md:w-14 text-white drop-shadow-lg" />
+          <div className="relative animate-float group cursor-pointer">
+            <div className="absolute inset-0 bg-gradient-premium rounded-2xl blur-2xl opacity-60 animate-pulse group-hover:opacity-80 transition-opacity"></div>
+            <div className="absolute inset-0 bg-gradient-premium rounded-2xl blur-xl opacity-40 animate-glow group-hover:blur-2xl transition-all"></div>
+            <div className="relative bg-gradient-premium animate-gradient p-3 md:p-5 rounded-2xl shadow-glow group-hover:scale-110 transition-transform duration-500">
+              <Sparkles className="h-8 w-8 md:h-14 md:w-14 text-white drop-shadow-lg group-hover:rotate-12 transition-transform duration-500" />
             </div>
           </div>
         </div>
         
         {/* Headline */}
-        <h1 className="text-3xl md:text-6xl lg:text-7xl font-bold tracking-tight">
-          <span className="bg-gradient-premium animate-gradient bg-clip-text text-transparent drop-shadow-2xl">
+        <h1 className="text-3xl md:text-6xl lg:text-7xl font-bold tracking-tight animate-fade-in">
+          <span className="bg-gradient-premium animate-gradient bg-clip-text text-transparent drop-shadow-2xl hover:scale-105 inline-block transition-transform duration-300 cursor-default">
             NOVA
           </span>
         </h1>
         
         {/* Tagline */}
-        <p className="text-base md:text-2xl text-muted-foreground font-medium max-w-2xl mx-auto px-4 animate-fade-in" style={{ animationDelay: '0.2s' }}>
+        <p className="text-base md:text-2xl text-muted-foreground font-medium max-w-2xl mx-auto px-4 animate-fade-in hover:text-foreground transition-colors duration-300" style={{ animationDelay: '0.2s' }}>
           It is the place where knowledge meets AI
         </p>
+        
+        {/* Interactive Stats */}
+        <div className="flex items-center justify-center gap-4 md:gap-6 pt-2 animate-fade-in" style={{ animationDelay: '0.3s' }}>
+          {[
+            { label: 'Instant', icon: Zap },
+            { label: 'Smart', icon: Brain },
+            { label: 'Reliable', icon: Shield },
+          ].map((stat, idx) => (
+            <div key={idx} className="group flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-card/30 backdrop-blur-sm border border-border/30 hover:border-primary/50 hover:bg-card/60 transition-all duration-300 cursor-default">
+              <stat.icon className="h-3.5 w-3.5 md:h-4 md:w-4 text-primary group-hover:scale-125 transition-transform duration-300" />
+              <span className="text-xs md:text-sm font-medium text-muted-foreground group-hover:text-primary transition-colors">{stat.label}</span>
+            </div>
+          ))}
+        </div>
       </div>
 
       {/* Feature Pills */}
@@ -52,12 +66,12 @@ export function WelcomeScreen({ onSearch }: WelcomeScreenProps) {
         ].map((feature, index) => (
           <div
             key={index}
-            className="group relative flex items-center gap-1.5 md:gap-2 px-3 md:px-4 py-2 rounded-full bg-card/80 backdrop-blur-sm border border-border/50 shadow-sm hover:shadow-aurora hover:scale-110 hover:border-primary/50 transition-all duration-300 cursor-default animate-fade-in"
+            className="group relative flex items-center gap-1.5 md:gap-2 px-3 md:px-4 py-2 rounded-full bg-card/80 backdrop-blur-sm border border-border/50 shadow-sm hover:shadow-aurora hover:scale-110 hover:border-primary/50 hover:-translate-y-1 transition-all duration-300 cursor-pointer animate-fade-in active:scale-95"
             style={{ animationDelay: `${index * 0.1}s` }}
           >
-            <div className={`absolute inset-0 rounded-full bg-gradient-to-r ${feature.gradient} opacity-0 group-hover:opacity-10 blur-xl transition-opacity duration-300`}></div>
-            <feature.icon className={`h-3.5 w-3.5 md:h-5 md:w-5 ${feature.color} relative z-10 group-hover:scale-110 transition-transform duration-300`} />
-            <span className="text-xs md:text-base font-medium text-foreground relative z-10">{feature.text}</span>
+            <div className={`absolute inset-0 rounded-full bg-gradient-to-r ${feature.gradient} opacity-0 group-hover:opacity-20 blur-xl transition-all duration-300 group-hover:blur-2xl`}></div>
+            <feature.icon className={`h-3.5 w-3.5 md:h-5 md:w-5 ${feature.color} relative z-10 group-hover:scale-125 group-hover:rotate-12 transition-all duration-300`} />
+            <span className="text-xs md:text-base font-medium text-foreground group-hover:text-primary relative z-10 transition-colors duration-300">{feature.text}</span>
           </div>
         ))}
       </div>

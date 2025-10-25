@@ -154,12 +154,12 @@ export function NovaSearchInput({ onSearch, isLoading = false }: NovaSearchInput
       )}
 
       {/* Main Search Bar */}
-      <div className="relative group">
-        <div className="absolute inset-0 bg-gradient-premium rounded-2xl md:rounded-3xl opacity-0 group-hover:opacity-20 blur-2xl transition-all duration-500 group-focus-within:opacity-30" />
-        <div className="absolute inset-0 bg-gradient-electric rounded-2xl md:rounded-3xl opacity-0 group-focus-within:opacity-10 blur-xl transition-opacity duration-300" />
+      <div className="relative group animate-fade-in">
+        <div className="absolute inset-0 bg-gradient-premium rounded-2xl md:rounded-3xl opacity-0 group-hover:opacity-30 blur-2xl transition-all duration-500 group-focus-within:opacity-40 animate-gradient" />
+        <div className="absolute inset-0 bg-gradient-electric rounded-2xl md:rounded-3xl opacity-0 group-focus-within:opacity-20 blur-xl transition-opacity duration-300" />
         
-        <div className="relative flex items-center gap-2 md:gap-3 bg-background/95 backdrop-blur-sm border-2 border-border/50 rounded-2xl md:rounded-3xl px-4 md:px-6 py-3 md:py-4 shadow-lg hover:shadow-aurora hover:border-primary/40 transition-all duration-300 focus-within:border-primary/60 focus-within:shadow-glow focus-within:scale-[1.02]">
-          <Search className="h-5 w-5 md:h-6 md:w-6 text-primary flex-shrink-0 group-focus-within:scale-110 transition-transform duration-300" />
+        <div className="relative flex items-center gap-2 md:gap-3 bg-background/95 backdrop-blur-xl border-2 border-border/50 rounded-2xl md:rounded-3xl px-4 md:px-6 py-3 md:py-4 shadow-xl hover:shadow-aurora hover:border-primary/50 transition-all duration-300 focus-within:border-primary focus-within:shadow-glow focus-within:scale-[1.02] hover:scale-[1.01]">
+          <Search className="h-5 w-5 md:h-6 md:w-6 text-primary flex-shrink-0 group-focus-within:scale-125 group-focus-within:rotate-12 transition-all duration-300 group-hover:text-primary/80" />
           
           <Textarea
             ref={textareaRef}
@@ -168,7 +168,7 @@ export function NovaSearchInput({ onSearch, isLoading = false }: NovaSearchInput
             onKeyDown={handleKeyDown}
             placeholder="Search with Nova... Ask me anything"
             disabled={isLoading}
-            className="flex-1 bg-transparent border-0 resize-none outline-none text-sm md:text-base placeholder:text-muted-foreground/70 disabled:opacity-50 min-h-[24px] max-h-[200px] py-0"
+            className="flex-1 bg-transparent border-0 resize-none outline-none text-sm md:text-base placeholder:text-muted-foreground/70 disabled:opacity-50 min-h-[24px] max-h-[200px] py-0 focus:placeholder:text-primary/50 transition-colors duration-300"
             rows={1}
             style={{
               height: 'auto',
@@ -197,10 +197,10 @@ export function NovaSearchInput({ onSearch, isLoading = false }: NovaSearchInput
               size="icon"
               onClick={() => fileInputRef.current?.click()}
               disabled={isLoading}
-              className="h-8 w-8 md:h-10 md:w-10 rounded-full hover:bg-primary/10 hover:text-primary flex-shrink-0"
+              className="h-8 w-8 md:h-10 md:w-10 rounded-full hover:bg-primary/10 hover:text-primary hover:scale-110 hover:rotate-12 transition-all duration-300 flex-shrink-0 group/attach"
               title="Attach files (up to 10)"
             >
-              <Paperclip className="h-4 w-4 md:h-5 md:w-5" />
+              <Paperclip className="h-4 w-4 md:h-5 md:w-5 group-hover/attach:scale-110 transition-transform duration-300" />
             </Button>
 
             <Button
@@ -210,14 +210,14 @@ export function NovaSearchInput({ onSearch, isLoading = false }: NovaSearchInput
               onClick={handleVoiceInput}
               disabled={isLoading}
               className={cn(
-                "h-8 w-8 md:h-10 md:w-10 rounded-full flex-shrink-0",
+                "h-8 w-8 md:h-10 md:w-10 rounded-full flex-shrink-0 group/voice transition-all duration-300",
                 isRecording 
-                  ? "bg-destructive/20 text-destructive animate-pulse" 
-                  : "hover:bg-primary/10 hover:text-primary"
+                  ? "bg-destructive/20 text-destructive animate-pulse scale-110" 
+                  : "hover:bg-primary/10 hover:text-primary hover:scale-110"
               )}
               title={isRecording ? "Recording..." : "Voice input"}
             >
-              <Mic className="h-4 w-4 md:h-5 md:w-5" />
+              <Mic className="h-4 w-4 md:h-5 md:w-5 group-hover/voice:scale-110 transition-transform duration-300" />
             </Button>
 
             <Button
@@ -225,19 +225,19 @@ export function NovaSearchInput({ onSearch, isLoading = false }: NovaSearchInput
               disabled={!input.trim() || isLoading}
               size="icon"
               className={cn(
-                "h-8 w-8 md:h-10 md:w-10 rounded-full flex-shrink-0 transition-all duration-300 relative overflow-hidden",
+                "h-8 w-8 md:h-10 md:w-10 rounded-full flex-shrink-0 transition-all duration-500 relative overflow-hidden",
                 input.trim() && !isLoading
-                  ? "bg-gradient-premium animate-gradient hover:scale-110 hover:shadow-glow hover:rotate-12"
+                  ? "bg-gradient-premium animate-gradient hover:scale-125 hover:shadow-glow hover:rotate-[360deg] active:scale-95"
                   : "opacity-50 cursor-not-allowed"
               )}
             >
               {input.trim() && !isLoading && (
-                <div className="absolute inset-0 bg-gradient-electric animate-aurora opacity-50"></div>
+                <div className="absolute inset-0 bg-gradient-electric animate-aurora opacity-60"></div>
               )}
               {isLoading ? (
                 <Loader2 className="h-4 w-4 md:h-5 md:w-5 animate-spin relative z-10" />
               ) : (
-                <ArrowUp className="h-4 w-4 md:h-5 md:w-5 relative z-10" />
+                <ArrowUp className="h-4 w-4 md:h-5 md:w-5 relative z-10 group-hover:translate-y-[-2px] transition-transform duration-300" />
               )}
             </Button>
           </div>
