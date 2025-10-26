@@ -1,79 +1,148 @@
-import { Sparkles, Zap, Globe, Shield, Brain, Eye, Image as ImageIcon } from "lucide-react";
+import { Sparkles, Zap, Globe, Shield, Brain, Eye, Image as ImageIcon, ArrowRight, Search } from "lucide-react";
 
 interface WelcomeScreenProps {
   onSearch: (query: string) => void;
 }
 
 export function WelcomeScreen({ onSearch }: WelcomeScreenProps) {
+  const features = [
+    { 
+      icon: Brain, 
+      title: "Smart AI", 
+      description: "Advanced intelligence",
+      gradient: "from-blue-500 via-cyan-500 to-blue-600" 
+    },
+    { 
+      icon: Eye, 
+      title: "Vision", 
+      description: "Multimodal understanding",
+      gradient: "from-purple-500 via-pink-500 to-purple-600" 
+    },
+    { 
+      icon: ImageIcon, 
+      title: "Image Gen", 
+      description: "Creative visualizations",
+      gradient: "from-cyan-500 via-blue-500 to-cyan-600" 
+    },
+    { 
+      icon: Zap, 
+      title: "Fast", 
+      description: "Lightning speed",
+      gradient: "from-yellow-500 via-orange-500 to-yellow-600" 
+    },
+    { 
+      icon: Shield, 
+      title: "Secure", 
+      description: "Privacy first",
+      gradient: "from-green-500 via-emerald-500 to-green-600" 
+    },
+    { 
+      icon: Globe, 
+      title: "Real-time", 
+      description: "Live information",
+      gradient: "from-indigo-500 via-purple-500 to-indigo-600" 
+    },
+  ];
+
   return (
-    <div className="flex flex-col items-center justify-center px-4 py-4 md:py-8 space-y-4 md:space-y-8 bg-gradient-mesh animate-fade-in relative z-0 overflow-hidden">
-      {/* Floating orbs background */}
+    <div className="flex flex-col items-center justify-center px-4 py-8 md:py-16 space-y-8 md:space-y-16 bg-gradient-mesh animate-fade-in relative z-0 overflow-hidden min-h-[80vh]">
+      {/* Enhanced Floating orbs background */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-gradient-glow-orb animate-float blur-3xl opacity-30" style={{ animationDelay: '0s' }}></div>
-        <div className="absolute top-1/3 right-1/4 w-96 h-96 bg-gradient-glow-orb animate-float blur-3xl opacity-20" style={{ animationDelay: '2s' }}></div>
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-glow-orb animate-float blur-3xl opacity-20" style={{ animationDelay: '0s' }}></div>
+        <div className="absolute top-1/3 right-1/4 w-[500px] h-[500px] bg-gradient-glow-orb animate-float blur-3xl opacity-15" style={{ animationDelay: '2s' }}></div>
         <div className="absolute bottom-1/4 left-1/3 w-80 h-80 bg-gradient-glow-orb animate-float blur-3xl opacity-25" style={{ animationDelay: '4s' }}></div>
+        <div className="absolute top-1/2 right-1/3 w-64 h-64 bg-gradient-premium animate-float blur-3xl opacity-10" style={{ animationDelay: '3s' }}></div>
       </div>
 
       {/* Hero Section */}
-      <div className="text-center space-y-2 md:space-y-4 max-w-4xl relative z-10">
-        {/* Logo */}
-        <div className="flex items-center justify-center gap-3 md:gap-4 mb-2 md:mb-4">
+      <div className="text-center space-y-6 md:space-y-8 max-w-5xl relative z-10 w-full">
+        {/* Enhanced Logo */}
+        <div className="flex items-center justify-center gap-4 mb-6 md:mb-8">
           <div className="relative animate-float group cursor-pointer">
-            <div className="absolute inset-0 bg-gradient-premium rounded-2xl blur-2xl opacity-60 animate-pulse group-hover:opacity-80 transition-opacity"></div>
-            <div className="absolute inset-0 bg-gradient-premium rounded-2xl blur-xl opacity-40 animate-glow group-hover:blur-2xl transition-all"></div>
-            <div className="relative bg-gradient-premium animate-gradient p-3 md:p-5 rounded-2xl shadow-glow group-hover:scale-110 transition-transform duration-500">
-              <Sparkles className="h-8 w-8 md:h-14 md:w-14 text-white drop-shadow-lg group-hover:rotate-12 transition-transform duration-500" />
+            {/* Multiple glow layers for depth */}
+            <div className="absolute inset-0 bg-gradient-premium rounded-3xl blur-3xl opacity-50 animate-pulse group-hover:opacity-70 transition-opacity duration-700"></div>
+            <div className="absolute inset-0 bg-gradient-premium rounded-3xl blur-2xl opacity-30 animate-glow group-hover:blur-3xl transition-all duration-700"></div>
+            <div className="absolute inset-0 bg-gradient-premium rounded-3xl blur-xl opacity-20 group-hover:opacity-40 transition-opacity duration-700"></div>
+            
+            {/* Main logo container */}
+            <div className="relative bg-gradient-premium animate-gradient p-6 md:p-8 rounded-3xl shadow-glow group-hover:scale-110 transition-all duration-700 border border-white/10">
+              <Sparkles className="h-12 w-12 md:h-20 md:w-20 text-white drop-shadow-2xl group-hover:rotate-12 transition-transform duration-700" />
             </div>
           </div>
         </div>
         
-        {/* Headline */}
-        <h1 className="text-3xl md:text-6xl lg:text-7xl font-bold tracking-tight animate-fade-in">
-          <span className="bg-gradient-premium animate-gradient bg-clip-text text-transparent drop-shadow-2xl hover:scale-105 inline-block transition-transform duration-300 cursor-default">
-            NOVA
-          </span>
-        </h1>
+        {/* Enhanced Headline */}
+        <div className="space-y-4">
+          <h1 className="text-5xl md:text-8xl lg:text-9xl font-bold tracking-tight animate-fade-in">
+            <span className="bg-gradient-premium animate-gradient bg-clip-text text-transparent drop-shadow-2xl hover:scale-105 inline-block transition-transform duration-500 cursor-default">
+              NOVA
+            </span>
+          </h1>
+          
+          {/* Tagline with better typography */}
+          <p className="text-xl md:text-3xl lg:text-4xl text-muted-foreground font-light max-w-3xl mx-auto px-4 animate-fade-in leading-relaxed" style={{ animationDelay: '0.2s' }}>
+            Where <span className="text-foreground font-semibold bg-gradient-premium animate-gradient bg-clip-text text-transparent">knowledge</span> meets <span className="text-foreground font-semibold bg-gradient-premium animate-gradient bg-clip-text text-transparent">AI</span>
+          </p>
+        </div>
         
-        {/* Tagline */}
-        <p className="text-base md:text-2xl text-muted-foreground font-medium max-w-2xl mx-auto px-4 animate-fade-in hover:text-foreground transition-colors duration-300" style={{ animationDelay: '0.2s' }}>
-          It is the place where knowledge meets AI
-        </p>
-        
-        {/* Interactive Stats */}
-        <div className="flex items-center justify-center gap-4 md:gap-6 pt-2 animate-fade-in" style={{ animationDelay: '0.3s' }}>
+        {/* Enhanced Interactive Stats */}
+        <div className="flex items-center justify-center gap-3 md:gap-6 pt-4 animate-fade-in flex-wrap" style={{ animationDelay: '0.3s' }}>
           {[
-            { label: 'Instant', icon: Zap },
-            { label: 'Smart', icon: Brain },
-            { label: 'Reliable', icon: Shield },
+            { label: 'Instant', icon: Zap, gradient: 'from-yellow-500 to-orange-500' },
+            { label: 'Smart', icon: Brain, gradient: 'from-blue-500 to-cyan-500' },
+            { label: 'Reliable', icon: Shield, gradient: 'from-green-500 to-emerald-500' },
           ].map((stat, idx) => (
-            <div key={idx} className="group flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-card/30 backdrop-blur-sm border border-border/30 hover:border-primary/50 hover:bg-card/60 transition-all duration-300 cursor-default">
-              <stat.icon className="h-3.5 w-3.5 md:h-4 md:w-4 text-primary group-hover:scale-125 transition-transform duration-300" />
-              <span className="text-xs md:text-sm font-medium text-muted-foreground group-hover:text-primary transition-colors">{stat.label}</span>
+            <div key={idx} className="group relative flex items-center gap-2 px-5 py-3 rounded-2xl bg-card/40 backdrop-blur-md border border-border/40 hover:border-primary/60 hover:bg-card/70 transition-all duration-500 cursor-pointer hover:scale-110 hover:-translate-y-1 active:scale-95">
+              <div className={`absolute inset-0 rounded-2xl bg-gradient-to-r ${stat.gradient} opacity-0 group-hover:opacity-20 blur-xl transition-all duration-500`}></div>
+              <stat.icon className="h-5 w-5 md:h-6 md:w-6 text-primary group-hover:scale-125 group-hover:rotate-12 transition-all duration-500 relative z-10" />
+              <span className="text-sm md:text-base font-semibold text-muted-foreground group-hover:text-primary transition-colors duration-300 relative z-10">{stat.label}</span>
             </div>
           ))}
         </div>
       </div>
 
-      {/* Feature Pills */}
-      <div className="flex flex-wrap items-center justify-center gap-2 max-w-4xl px-2 relative z-10">
-        {[
-          { icon: Brain, text: "Smart AI", color: "text-primary", gradient: "from-blue-500 to-cyan-500" },
-          { icon: Eye, text: "Vision", color: "text-accent-foreground", gradient: "from-purple-500 to-pink-500" },
-          { icon: ImageIcon, text: "Image Gen", color: "text-primary", gradient: "from-cyan-500 to-blue-500" },
-          { icon: Zap, text: "Fast", color: "text-accent-foreground", gradient: "from-yellow-500 to-orange-500" },
-          { icon: Shield, text: "Secure", color: "text-accent-foreground", gradient: "from-green-500 to-emerald-500" },
-          { icon: Globe, text: "Real-time", color: "text-accent-foreground", gradient: "from-indigo-500 to-purple-500" },
-        ].map((feature, index) => (
+      {/* Feature Cards Grid */}
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6 max-w-6xl w-full px-2 relative z-10">
+        {features.map((feature, index) => (
           <div
             key={index}
-            className="group relative flex items-center gap-1.5 md:gap-2 px-3 md:px-4 py-2 rounded-full bg-card/80 backdrop-blur-sm border border-border/50 shadow-sm hover:shadow-aurora hover:scale-110 hover:border-primary/50 hover:-translate-y-1 transition-all duration-300 cursor-pointer animate-fade-in active:scale-95"
+            className="group relative p-6 md:p-8 rounded-3xl bg-card/60 backdrop-blur-md border border-border/40 shadow-lg hover:shadow-aurora hover:scale-105 hover:border-primary/60 hover:-translate-y-2 transition-all duration-500 cursor-pointer animate-fade-in overflow-hidden"
             style={{ animationDelay: `${index * 0.1}s` }}
           >
-            <div className={`absolute inset-0 rounded-full bg-gradient-to-r ${feature.gradient} opacity-0 group-hover:opacity-20 blur-xl transition-all duration-300 group-hover:blur-2xl`}></div>
-            <feature.icon className={`h-3.5 w-3.5 md:h-5 md:w-5 ${feature.color} relative z-10 group-hover:scale-125 group-hover:rotate-12 transition-all duration-300`} />
-            <span className="text-xs md:text-base font-medium text-foreground group-hover:text-primary relative z-10 transition-colors duration-300">{feature.text}</span>
+            {/* Gradient background on hover */}
+            <div className={`absolute inset-0 rounded-3xl bg-gradient-to-br ${feature.gradient} opacity-0 group-hover:opacity-20 blur-2xl transition-all duration-500 group-hover:blur-3xl`}></div>
+            
+            {/* Icon */}
+            <div className="relative z-10 flex flex-col items-center space-y-4 text-center">
+              <div className={`p-4 md:p-5 rounded-2xl bg-gradient-to-br ${feature.gradient} shadow-glow group-hover:scale-125 group-hover:rotate-12 transition-all duration-500`}>
+                <feature.icon className="h-8 w-8 md:h-10 md:w-10 text-white" />
+              </div>
+              
+              {/* Text */}
+              <div className="space-y-1">
+                <h3 className="text-lg md:text-xl font-bold text-foreground group-hover:text-primary transition-colors duration-300">
+                  {feature.title}
+                </h3>
+                <p className="text-xs md:text-sm text-muted-foreground group-hover:text-foreground transition-colors duration-300">
+                  {feature.description}
+                </p>
+              </div>
+            </div>
+
+            {/* Bottom accent line */}
+            <div className={`absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r ${feature.gradient} scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left rounded-b-3xl`}></div>
           </div>
         ))}
+      </div>
+
+      {/* Call to Action */}
+      <div className="relative z-10 flex flex-col items-center gap-6 animate-fade-in" style={{ animationDelay: '0.6s' }}>
+        <div className="flex items-center gap-3 text-muted-foreground">
+          <div className="h-px w-12 bg-gradient-to-r from-transparent to-border"></div>
+          <Search className="h-5 w-5 text-primary animate-pulse" />
+          <span className="text-sm md:text-base font-medium">Start your search below</span>
+          <div className="h-px w-12 bg-gradient-to-l from-transparent to-border"></div>
+        </div>
       </div>
     </div>
   );
