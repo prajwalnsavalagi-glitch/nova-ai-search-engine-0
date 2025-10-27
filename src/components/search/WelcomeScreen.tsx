@@ -45,7 +45,7 @@ export function WelcomeScreen({ onSearch }: WelcomeScreenProps) {
   ];
 
   return (
-    <div className="flex flex-col items-center justify-center px-4 py-6 md:py-8 space-y-6 md:space-y-8 bg-gradient-mesh animate-fade-in relative z-0 overflow-hidden">
+    <div className="flex flex-col items-center justify-center px-4 py-4 md:py-6 space-y-4 md:space-y-6 bg-gradient-mesh animate-fade-in relative z-0 overflow-hidden">
       {/* Enhanced Floating orbs background */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-glow-orb animate-float blur-3xl opacity-20" style={{ animationDelay: '0s' }}></div>
@@ -55,7 +55,7 @@ export function WelcomeScreen({ onSearch }: WelcomeScreenProps) {
       </div>
 
       {/* Hero Section */}
-      <div className="text-center space-y-3 md:space-y-4 max-w-5xl relative z-10 w-full">
+      <div className="text-center space-y-2 md:space-y-3 max-w-5xl relative z-10 w-full">
         {/* Enhanced Logo */}
         <div className="flex items-center justify-center gap-4 mb-3 md:mb-4">
           <div className="relative animate-float group cursor-pointer">
@@ -100,36 +100,29 @@ export function WelcomeScreen({ onSearch }: WelcomeScreenProps) {
         </div>
       </div>
 
-      {/* Feature Cards Grid */}
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4 max-w-5xl w-full px-2 relative z-10">
+      {/* Feature Cards - Single Row */}
+      <div className="flex flex-wrap justify-center gap-2 md:gap-3 max-w-5xl w-full px-2 relative z-10">
         {features.map((feature, index) => (
           <div
             key={index}
-            className="group relative p-4 md:p-5 rounded-2xl bg-card/60 backdrop-blur-md border border-border/40 shadow-lg hover:shadow-aurora hover:scale-105 hover:border-primary/60 hover:-translate-y-1 transition-all duration-500 cursor-pointer animate-fade-in overflow-hidden"
+            className="group relative px-3 py-2 rounded-xl bg-card/60 backdrop-blur-md border border-border/40 shadow-lg hover:shadow-aurora hover:scale-105 hover:border-primary/60 transition-all duration-500 cursor-pointer animate-fade-in overflow-hidden"
             style={{ animationDelay: `${index * 0.1}s` }}
           >
             {/* Gradient background on hover */}
-            <div className={`absolute inset-0 rounded-2xl bg-gradient-to-br ${feature.gradient} opacity-0 group-hover:opacity-20 blur-xl transition-all duration-500 group-hover:blur-2xl`}></div>
+            <div className={`absolute inset-0 rounded-xl bg-gradient-to-br ${feature.gradient} opacity-0 group-hover:opacity-20 blur-xl transition-all duration-500`}></div>
             
-            {/* Icon */}
-            <div className="relative z-10 flex flex-col items-center space-y-2 text-center">
-              <div className={`p-2.5 md:p-3 rounded-xl bg-gradient-to-br ${feature.gradient} shadow-glow group-hover:scale-110 group-hover:rotate-6 transition-all duration-500`}>
-                <feature.icon className="h-5 w-5 md:h-6 md:w-6 text-white" />
+            {/* Icon and Title in Row */}
+            <div className="relative z-10 flex items-center gap-2">
+              <div className={`p-1.5 rounded-lg bg-gradient-to-br ${feature.gradient} shadow-glow group-hover:scale-110 transition-all duration-500`}>
+                <feature.icon className="h-4 w-4 text-white" />
               </div>
-              
-              {/* Text */}
-              <div className="space-y-0.5">
-                <h3 className="text-sm md:text-base font-bold text-foreground group-hover:text-primary transition-colors duration-300">
-                  {feature.title}
-                </h3>
-                <p className="text-xs text-muted-foreground group-hover:text-foreground transition-colors duration-300">
-                  {feature.description}
-                </p>
-              </div>
+              <h3 className="text-sm font-bold text-foreground group-hover:text-primary transition-colors duration-300 whitespace-nowrap">
+                {feature.title}
+              </h3>
             </div>
 
             {/* Bottom accent line */}
-            <div className={`absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r ${feature.gradient} scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left rounded-b-2xl`}></div>
+            <div className={`absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r ${feature.gradient} scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left rounded-b-xl`}></div>
           </div>
         ))}
       </div>
