@@ -18,6 +18,7 @@ import {
   Users
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { loadApiKeys } from "@/lib/apiKeyStorage";
 
 const newsCategories = [
   { id: "technology", name: "Technology", icon: Zap },
@@ -99,6 +100,9 @@ export default function Discover() {
       setIsLoadingNews(true);
       setNewsError(null);
       
+      // Load user's API keys from settings
+      const userApiKeys = loadApiKeys();
+      
       // Add timestamp to force fresh results
       const timestamp = Date.now();
       const newsQueries = [
@@ -113,7 +117,8 @@ export default function Discover() {
           const { data, error } = await supabase.functions.invoke('search', {
             body: { 
               query,
-              timestamp // Include timestamp to prevent caching
+              timestamp, // Include timestamp to prevent caching
+              apiKeys: userApiKeys // Pass user's API keys
             }
           });
           if (error) throw error;

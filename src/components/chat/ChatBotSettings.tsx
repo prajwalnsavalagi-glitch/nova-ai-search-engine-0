@@ -1,13 +1,16 @@
 import { useState, useEffect } from 'react';
-import { Settings, Sparkles, Zap, Code, Beaker } from 'lucide-react';
+import { Settings, Sparkles, Zap, Code, Beaker, Key } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
+import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Slider } from '@/components/ui/slider';
 import { Badge } from '@/components/ui/badge';
+import { Separator } from '@/components/ui/separator';
 import { AVAILABLE_MODELS } from '@/services/openrouterApi';
+import { loadApiKeys, saveApiKeys, type ApiKeys } from '@/lib/apiKeyStorage';
 
 export interface ChatBotSettingsData {
   model: string;
@@ -60,13 +63,16 @@ interface ChatBotSettingsProps {
 
 export function ChatBotSettings({ open, onOpenChange, settings, onSettingsChange }: ChatBotSettingsProps) {
   const [localSettings, setLocalSettings] = useState<ChatBotSettingsData>(settings);
+  const [apiKeys, setApiKeys] = useState<ApiKeys>(loadApiKeys());
 
   useEffect(() => {
     setLocalSettings(settings);
-  }, [settings]);
+    setApiKeys(loadApiKeys());
+  }, [settings, open]);
 
   const handleSave = () => {
     onSettingsChange(localSettings);
+    saveApiKeys(apiKeys);
     onOpenChange(false);
   };
 
@@ -192,6 +198,49 @@ export function ChatBotSettings({ open, onOpenChange, settings, onSettingsChange
                   </Button>
                 );
               })}
+            </div>
+          </div>
+
+          <Separator />
+
+          {/* API Keys Section */}
+          <div className="space-y-4">
+            <div className="flex items-center gap-2">
+              <Key className="h-4 w-4" />
+              <Label className="text-base font-semibold">API Keys (Optional)</Label>
+            </div>
+            <p className="text-xs text-muted-foreground">
+              Provide your own API keys to use your quota. Leave empty to use default keys.
+            </p>
+            
+            <div className="space-y-2">
+              <Label htmlFor="openrouter-key">OpenRouter API Key</Label>
+              <Input
+                id="openrouter-key"
+                type="password"
+                value={apiKeys.openrouter || ''}
+                onChange={(e) => setApiKeys(prev => ({ ...prev, openrouter: e.target.value }))}
+                placeholder="sk-or-..."
+                className="font-mono text-sm"
+              />
+              <p className="text-xs text-muted-foreground">
+                Get your key from <a href="https://openrouter.ai/keys" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">openrouter.ai/keys</a>
+              </p>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="tavily-key">Tavily API Key (for news & search)</Label>
+              <Input
+                id="tavily-key"
+                type="password"
+                value={apiKeys.tavily || ''}
+                onChange={(e) => setApiKeys(prev => ({ ...prev, tavily: e.target.value }))}
+                placeholder="tvly-..."
+                className="font-mono text-sm"
+              />
+              <p className="text-xs text-muted-foreground">
+                Get your key from <a href="https://tavily.com" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">tavily.com</a>
+              </p>
             </div>
           </div>
         </div>
