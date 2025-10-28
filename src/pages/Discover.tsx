@@ -34,7 +34,8 @@ const featuredNews = [
     category: "Loading",
     time: "Now",
     source: "NOVA",
-    trending: true
+    trending: true,
+    image: null
   }
 ];
 
@@ -128,14 +129,16 @@ export default function Discover() {
       
       const allNews = newsResults.flatMap((result, categoryIndex) => {
         const categories = ["Technology", "Science", "Business", "Health"];
-        return (result?.sources || []).slice(0, 3).map((article: any) => ({
+        const images = result?.images || [];
+        return (result?.sources || []).slice(0, 3).map((article: any, idx: number) => ({
           title: article.title || 'No title',
-          description: (article.content || '').slice(0, 200) + '...',
+          description: (article.snippet || article.content || '').slice(0, 200) + '...',
           category: categories[categoryIndex] || "News",
           time: new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }),
           source: article.domain || 'Unknown',
           trending: Math.random() > 0.6,
           url: article.url,
+          image: images[idx] || null,
           fetchedAt: timestamp // Add timestamp to track when fetched
         }))
       });
@@ -241,19 +244,20 @@ export default function Discover() {
               </Card>
             )}
             
-            {/* News Grid */}
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {/* News Grid - Perplexity Style */}
+            <div className="grid md:grid-cols-2 gap-6">
               {isLoadingNews ? (
                 // Loading skeleton
                 Array.from({ length: 6 }).map((_, index) => (
-                  <Card key={index} className="p-6 animate-pulse animate-fade-in" style={{ animationDelay: `${index * 0.1}s` }}>
-                    <div className="space-y-4">
+                  <Card key={index} className="overflow-hidden animate-pulse animate-fade-in border-2 border-border/40" style={{ animationDelay: `${index * 0.1}s` }}>
+                    <div className="aspect-video bg-muted transition-all duration-300"></div>
+                    <div className="p-6 space-y-4">
                       <div className="flex items-center gap-2">
                         <div className="h-6 w-16 bg-muted rounded transition-all duration-300"></div>
                         <div className="h-6 w-20 bg-muted rounded transition-all duration-300"></div>
                       </div>
-                      <div className="h-6 bg-muted rounded w-3/4 transition-all duration-300"></div>
-                      <div className="h-16 bg-muted rounded transition-all duration-300"></div>
+                      <div className="h-8 bg-muted rounded w-full transition-all duration-300"></div>
+                      <div className="h-20 bg-muted rounded transition-all duration-300"></div>
                       <div className="flex justify-between">
                         <div className="h-4 w-20 bg-muted rounded transition-all duration-300"></div>
                         <div className="h-4 w-16 bg-muted rounded transition-all duration-300"></div>
@@ -265,17 +269,40 @@ export default function Discover() {
                 news.map((newsItem, index) => (
                   <Card 
                     key={index} 
-                    className="relative p-6 hover:shadow-glow hover:border-primary/40 transition-all duration-500 cursor-pointer group animate-fade-in border-2 border-border/40 bg-gradient-to-br from-card to-card/95 backdrop-blur-lg overflow-hidden hover:scale-[1.03] hover:-translate-y-1"
+                    className="relative overflow-hidden hover:shadow-glow hover:border-primary/40 transition-all duration-500 cursor-pointer group animate-fade-in border-2 border-border/40 bg-gradient-to-br from-card to-card/95 backdrop-blur-lg hover:scale-[1.02] hover:-translate-y-2"
                     onClick={() => handleNewsClick(newsItem)}
                     style={{ animationDelay: `${index * 0.05}s` }}
                   >
-                    <div className="absolute inset-0 bg-gradient-mesh opacity-0 group-hover:opacity-30 transition-all duration-500 pointer-events-none"></div>
+                    {/* Image */}
+                    {newsItem.image ? (
+                      <div className="relative aspect-video overflow-hidden bg-gradient-to-br from-primary/5 to-accent/5">
+                        <img 
+                          src={newsItem.image} 
+                          alt={newsItem.title}
+                          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                          onError={(e) => {
+                            e.currentTarget.style.display = 'none';
+                          }}
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-card/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                      </div>
+                    ) : (
+                      <div className="relative aspect-video overflow-hidden bg-gradient-to-br from-primary/10 via-accent/5 to-primary/5">
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <Globe className="h-16 w-16 text-primary/20 transition-all duration-500 group-hover:scale-125 group-hover:rotate-12" />
+                        </div>
+                        <div className="absolute inset-0 bg-gradient-mesh opacity-20"></div>
+                      </div>
+                    )}
+                    
+                    {/* Overlay effects */}
                     <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-premium opacity-0 group-hover:opacity-100 transition-all duration-300 scale-x-0 group-hover:scale-x-100 origin-left"></div>
                     
-                    <div className="space-y-4 relative z-10">
+                    {/* Content */}
+                    <div className="p-6 space-y-4 relative z-10">
                       <div className="flex items-start justify-between gap-4">
                         <div className="flex-1">
-                          <div className="flex items-center gap-2 mb-2">
+                          <div className="flex items-center gap-2 mb-3">
                             <Badge variant="secondary" className="group-hover:bg-primary/10 group-hover:text-primary transition-all duration-300 group-hover:scale-110">
                               {newsItem.category}
                             </Badge>
@@ -286,23 +313,23 @@ export default function Discover() {
                               </Badge>
                             )}
                           </div>
-                          <h3 className="text-lg font-semibold group-hover:bg-gradient-premium group-hover:bg-clip-text group-hover:text-transparent transition-all duration-300">
+                          <h3 className="text-xl font-bold leading-tight mb-3 group-hover:bg-gradient-premium group-hover:bg-clip-text group-hover:text-transparent transition-all duration-300">
                             {newsItem.title}
                           </h3>
                         </div>
-                        <ExternalLink className="h-4 w-4 text-muted-foreground group-hover:text-primary group-hover:scale-125 group-hover:rotate-12 transition-all duration-300" />
+                        <ExternalLink className="h-5 w-5 text-muted-foreground group-hover:text-primary group-hover:scale-125 group-hover:rotate-12 transition-all duration-300 flex-shrink-0" />
                       </div>
                       
-                      <p className="text-muted-foreground leading-relaxed transition-colors duration-300 group-hover:text-foreground">
+                      <p className="text-muted-foreground leading-relaxed text-sm transition-colors duration-300 group-hover:text-foreground line-clamp-3">
                         {newsItem.description}
                       </p>
                       
-                      <div className="flex items-center justify-between text-sm text-muted-foreground transition-all duration-300 group-hover:text-foreground">
-                        <span className="flex items-center gap-1">
-                          <Clock className="h-3 w-3 transition-transform duration-300 group-hover:rotate-12" />
+                      <div className="flex items-center justify-between text-sm text-muted-foreground transition-all duration-300 group-hover:text-foreground pt-2 border-t border-border/50">
+                        <span className="flex items-center gap-2">
+                          <Clock className="h-4 w-4 transition-transform duration-300 group-hover:rotate-12" />
                           {newsItem.time}
                         </span>
-                        <span className="transition-all duration-300 group-hover:scale-110">{newsItem.source}</span>
+                        <span className="transition-all duration-300 group-hover:scale-110 font-medium">{newsItem.source}</span>
                       </div>
                     </div>
                   </Card>
