@@ -166,78 +166,72 @@ export default function Discover() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[hsl(var(--discover-bg))] to-background relative overflow-hidden">
-      {/* Animated background orbs */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-20 left-1/4 w-96 h-96 bg-gradient-glow-orb animate-float blur-3xl opacity-20 transition-all duration-1000"></div>
-        <div className="absolute top-1/3 right-1/4 w-80 h-80 bg-gradient-glow-orb animate-float blur-3xl opacity-15 transition-all duration-1000" style={{ animationDelay: '2s' }}></div>
-        <div className="absolute bottom-1/4 left-1/3 w-72 h-72 bg-gradient-glow-orb animate-float blur-3xl opacity-10 transition-all duration-1000" style={{ animationDelay: '4s' }}></div>
-      </div>
-
+    <div className="min-h-screen bg-background relative">
       {/* Theme Toggle */}
       <div className="fixed top-4 right-4 z-50">
         <ThemeToggle />
       </div>
       
-      <div className="max-w-6xl mx-auto p-6 space-y-8 relative z-10">
+      <div className="w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6 relative z-10 max-w-7xl">
         {/* Header with Back Button */}
-        <div className="flex items-center gap-4 animate-fade-in">
+        <div className="flex items-center justify-between animate-fade-in">
           <Button
             variant="ghost"
             size="sm"
             onClick={() => navigate('/')}
-            className="flex items-center gap-2 hover:scale-105 transition-transform rounded-full"
+            className="flex items-center gap-2 hover:scale-105 transition-transform"
           >
             <ArrowLeft className="h-4 w-4" />
-            Back to Home
+            Back
           </Button>
         </div>
 
-        <div className="text-center space-y-4 animate-fade-in" style={{ animationDelay: '0.1s' }}>
-          <h1 className="text-4xl md:text-5xl font-bold bg-gradient-premium animate-gradient bg-clip-text text-transparent">
+        <div className="space-y-2 animate-fade-in" style={{ animationDelay: '0.1s' }}>
+          <h1 className="text-3xl md:text-4xl font-bold text-foreground">
             Discover
           </h1>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Stay updated with the latest news, trends, and discoveries from around the world. Auto-refreshed every 5 minutes.
+          <p className="text-base text-muted-foreground">
+            Stay updated with the latest news and trends
           </p>
         </div>
 
         {/* Content Tabs */}
-        <Tabs defaultValue="news" className="space-y-6 animate-fade-in" style={{ animationDelay: '0.2s' }}>
-          <TabsList className="grid w-full grid-cols-3 bg-card/80 backdrop-blur-lg border border-border/50 p-1 shadow-lg transition-all duration-300 hover:shadow-xl">
+        <Tabs defaultValue="news" className="space-y-4 animate-fade-in" style={{ animationDelay: '0.2s' }}>
+          <TabsList className="w-full sm:w-auto inline-flex bg-muted p-1 rounded-lg">
             <TabsTrigger 
               value="news" 
-              className="flex items-center gap-2 data-[state=active]:bg-gradient-premium data-[state=active]:text-white rounded-lg transition-all duration-300 hover:scale-105"
+              className="flex items-center gap-2 data-[state=active]:bg-background data-[state=active]:shadow-sm rounded-md transition-all duration-200"
             >
-              <Newspaper className="h-4 w-4 transition-transform duration-300 group-hover:rotate-12" />
-              Latest News
+              <Newspaper className="h-4 w-4" />
+              <span className="hidden sm:inline">News</span>
             </TabsTrigger>
             <TabsTrigger 
               value="trending" 
-              className="flex items-center gap-2 data-[state=active]:bg-gradient-premium data-[state=active]:text-white rounded-lg transition-all duration-300 hover:scale-105"
+              className="flex items-center gap-2 data-[state=active]:bg-background data-[state=active]:shadow-sm rounded-md transition-all duration-200"
             >
-              <TrendingUp className="h-4 w-4 transition-transform duration-300 group-hover:rotate-12" />
-              Trending
+              <TrendingUp className="h-4 w-4" />
+              <span className="hidden sm:inline">Trending</span>
             </TabsTrigger>
             <TabsTrigger 
               value="suggestions" 
-              className="flex items-center gap-2 data-[state=active]:bg-gradient-premium data-[state=active]:text-white rounded-lg transition-all duration-300 hover:scale-105"
+              className="flex items-center gap-2 data-[state=active]:bg-background data-[state=active]:shadow-sm rounded-md transition-all duration-200"
             >
-              <Zap className="h-4 w-4 transition-transform duration-300 group-hover:rotate-12" />
-              Suggestions
+              <Zap className="h-4 w-4" />
+              <span className="hidden sm:inline">Suggestions</span>
             </TabsTrigger>
           </TabsList>
 
           {/* Latest News Tab */}
-          <TabsContent value="news" className="space-y-6 animate-fade-in">
+          <TabsContent value="news" className="space-y-4 animate-fade-in">
             {/* Error Message */}
             {newsError && !isLoadingNews && (
-              <Card className="p-6 text-center animate-scale-in">
-                <p className="text-muted-foreground">{newsError}</p>
+              <Card className="p-6 text-center">
+                <p className="text-muted-foreground text-sm">{newsError}</p>
                 <Button 
                   variant="outline" 
                   onClick={fetchLatestNews}
-                  className="mt-4 transition-all duration-300 hover:scale-105 hover:shadow-lg"
+                  className="mt-4"
+                  size="sm"
                 >
                   Try Again
                 </Button>
@@ -245,22 +239,19 @@ export default function Discover() {
             )}
             
             {/* News Grid - Perplexity Style */}
-            <div className="grid md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {isLoadingNews ? (
                 // Loading skeleton
                 Array.from({ length: 6 }).map((_, index) => (
-                  <Card key={index} className="overflow-hidden animate-pulse animate-fade-in border-2 border-border/40" style={{ animationDelay: `${index * 0.1}s` }}>
-                    <div className="aspect-video bg-muted transition-all duration-300"></div>
-                    <div className="p-6 space-y-4">
-                      <div className="flex items-center gap-2">
-                        <div className="h-6 w-16 bg-muted rounded transition-all duration-300"></div>
-                        <div className="h-6 w-20 bg-muted rounded transition-all duration-300"></div>
-                      </div>
-                      <div className="h-8 bg-muted rounded w-full transition-all duration-300"></div>
-                      <div className="h-20 bg-muted rounded transition-all duration-300"></div>
-                      <div className="flex justify-between">
-                        <div className="h-4 w-20 bg-muted rounded transition-all duration-300"></div>
-                        <div className="h-4 w-16 bg-muted rounded transition-all duration-300"></div>
+                  <Card key={index} className="overflow-hidden animate-pulse border" style={{ animationDelay: `${index * 0.05}s` }}>
+                    <div className="aspect-[16/10] bg-muted"></div>
+                    <div className="p-4 space-y-3">
+                      <div className="h-4 w-16 bg-muted rounded"></div>
+                      <div className="h-5 bg-muted rounded w-full"></div>
+                      <div className="h-5 bg-muted rounded w-3/4"></div>
+                      <div className="flex justify-between items-center pt-2">
+                        <div className="h-3 w-20 bg-muted rounded"></div>
+                        <div className="h-3 w-16 bg-muted rounded"></div>
                       </div>
                     </div>
                   </Card>
@@ -269,67 +260,53 @@ export default function Discover() {
                 news.map((newsItem, index) => (
                   <Card 
                     key={index} 
-                    className="relative overflow-hidden hover:shadow-glow hover:border-primary/40 transition-all duration-500 cursor-pointer group animate-fade-in border-2 border-border/40 bg-gradient-to-br from-card to-card/95 backdrop-blur-lg hover:scale-[1.02] hover:-translate-y-2"
+                    className="overflow-hidden hover:shadow-md transition-all duration-200 cursor-pointer group animate-fade-in border"
                     onClick={() => handleNewsClick(newsItem)}
                     style={{ animationDelay: `${index * 0.05}s` }}
                   >
                     {/* Image */}
                     {newsItem.image ? (
-                      <div className="relative aspect-video overflow-hidden bg-gradient-to-br from-primary/5 to-accent/5">
+                      <div className="relative aspect-[16/10] overflow-hidden bg-muted">
                         <img 
                           src={newsItem.image} 
                           alt={newsItem.title}
-                          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                          className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                           onError={(e) => {
                             e.currentTarget.style.display = 'none';
                           }}
                         />
-                        <div className="absolute inset-0 bg-gradient-to-t from-card/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                       </div>
                     ) : (
-                      <div className="relative aspect-video overflow-hidden bg-gradient-to-br from-primary/10 via-accent/5 to-primary/5">
+                      <div className="relative aspect-[16/10] overflow-hidden bg-muted">
                         <div className="absolute inset-0 flex items-center justify-center">
-                          <Globe className="h-16 w-16 text-primary/20 transition-all duration-500 group-hover:scale-125 group-hover:rotate-12" />
+                          <Globe className="h-12 w-12 text-muted-foreground/30" />
                         </div>
-                        <div className="absolute inset-0 bg-gradient-mesh opacity-20"></div>
                       </div>
                     )}
                     
-                    {/* Overlay effects */}
-                    <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-premium opacity-0 group-hover:opacity-100 transition-all duration-300 scale-x-0 group-hover:scale-x-100 origin-left"></div>
-                    
                     {/* Content */}
-                    <div className="p-6 space-y-4 relative z-10">
-                      <div className="flex items-start justify-between gap-4">
-                        <div className="flex-1">
-                          <div className="flex items-center gap-2 mb-3">
-                            <Badge variant="secondary" className="group-hover:bg-primary/10 group-hover:text-primary transition-all duration-300 group-hover:scale-110">
-                              {newsItem.category}
-                            </Badge>
-                            {newsItem.trending && (
-                              <Badge className="flex items-center gap-1 bg-gradient-premium text-white animate-pulse shadow-sm transition-all duration-300 group-hover:scale-110">
-                                <TrendingUp className="h-3 w-3 transition-transform duration-300 group-hover:rotate-12" />
-                                Trending
-                              </Badge>
-                            )}
-                          </div>
-                          <h3 className="text-xl font-bold leading-tight mb-3 group-hover:bg-gradient-premium group-hover:bg-clip-text group-hover:text-transparent transition-all duration-300">
-                            {newsItem.title}
-                          </h3>
-                        </div>
-                        <ExternalLink className="h-5 w-5 text-muted-foreground group-hover:text-primary group-hover:scale-125 group-hover:rotate-12 transition-all duration-300 flex-shrink-0" />
+                    <div className="p-4 space-y-2">
+                      <div className="flex items-center gap-2">
+                        <Badge variant="secondary" className="text-xs">
+                          {newsItem.category}
+                        </Badge>
+                        {newsItem.trending && (
+                          <Badge variant="default" className="flex items-center gap-1 text-xs">
+                            <TrendingUp className="h-3 w-3" />
+                            Trending
+                          </Badge>
+                        )}
                       </div>
+                      <h3 className="font-semibold leading-tight line-clamp-2 text-sm group-hover:text-primary transition-colors">
+                        {newsItem.title}
+                      </h3>
                       
-                      <p className="text-muted-foreground leading-relaxed text-sm transition-colors duration-300 group-hover:text-foreground line-clamp-3">
-                        {newsItem.description}
-                      </p>
-                      
-                      <div className="flex items-center justify-between text-sm text-muted-foreground transition-all duration-300 group-hover:text-foreground pt-2 border-t border-border/50">
-                        <span className="flex items-center gap-2">
-                          <Clock className="h-4 w-4 transition-transform duration-300 group-hover:rotate-12" />
+                      <div className="flex items-center justify-between text-xs text-muted-foreground pt-2 border-t">
+                        <span className="flex items-center gap-1">
+                          <Clock className="h-3 w-3" />
                           {newsItem.time}
                         </span>
-                        <span className="transition-all duration-300 group-hover:scale-110 font-medium">{newsItem.source}</span>
+                        <span className="truncate ml-2">{newsItem.source}</span>
                       </div>
                     </div>
                   </Card>
@@ -339,70 +316,61 @@ export default function Discover() {
           </TabsContent>
 
           {/* Trending Tab */}
-          <TabsContent value="trending" className="space-y-6 animate-fade-in">
-            <Card className="relative p-6 border-2 border-border/40 shadow-aurora bg-gradient-to-br from-card to-card/95 backdrop-blur-lg overflow-hidden transition-all duration-500 hover:shadow-glow hover:border-primary/30">
-              <div className="absolute inset-0 bg-gradient-mesh opacity-20 pointer-events-none transition-opacity duration-500"></div>
-              <div className="relative z-10">
-                <h3 className="text-xl font-semibold mb-4 flex items-center gap-2 animate-fade-in">
-                  <div className="h-9 w-9 rounded-xl bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center shadow-sm transition-all duration-300 hover:scale-110 hover:rotate-6">
-                    <TrendingUp className="h-5 w-5 text-primary transition-transform duration-300" />
-                  </div>
-                  <span className="bg-gradient-premium bg-clip-text text-transparent">Trending Searches</span>
-                </h3>
-                <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
-                  {trendingQueries.map((query, index) => (
+          <TabsContent value="trending" className="space-y-4 animate-fade-in">
+            <Card className="p-6 border">
+              <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+                <TrendingUp className="h-5 w-5 text-primary" />
+                Trending Searches
+              </h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                {trendingQueries.map((query, index) => (
+                  <Button
+                    key={index}
+                    variant="outline"
+                    className="justify-start h-auto p-3 text-left hover:bg-accent transition-all duration-200"
+                    onClick={() => {
+                      addRecentSearch(query);
+                      window.dispatchEvent(new CustomEvent('nova:new-chat'));
+                      navigate('/', { state: { initialQuery: query } });
+                    }}
+                  >
+                    <div className="text-sm">
+                      <div className="font-medium">{query}</div>
+                      <div className="text-xs text-muted-foreground mt-1">
+                        #{index + 1} trending
+                      </div>
+                    </div>
+                  </Button>
+                ))}
+              </div>
+            </Card>
+          </TabsContent>
+
+          {/* Suggestions Tab */}
+          <TabsContent value="suggestions" className="space-y-4 animate-fade-in">
+            {suggestedSearches.map((categoryData, index) => (
+              <Card 
+                key={index} 
+                className="p-6 border" 
+                style={{ animationDelay: `${index * 0.05}s` }}
+              >
+                <h3 className="text-lg font-semibold mb-4">{categoryData.category}</h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  {categoryData.queries.map((query, queryIndex) => (
                     <Button
-                      key={index}
-                      variant="outline"
-                      className="justify-start h-auto p-4 text-left hover:bg-gradient-to-r hover:from-primary/10 hover:to-accent/10 hover:border-primary/40 hover:shadow-md hover:scale-105 hover:-translate-y-1 transition-all duration-300 animate-fade-in border-2"
-                      style={{ animationDelay: `${index * 0.05}s` }}
+                      key={queryIndex}
+                      variant="ghost"
+                      className="justify-start h-auto p-3 text-left hover:bg-accent transition-all duration-200"
                       onClick={() => {
                         addRecentSearch(query);
                         window.dispatchEvent(new CustomEvent('nova:new-chat'));
                         navigate('/', { state: { initialQuery: query } });
                       }}
                     >
-                      <div>
-                        <div className="font-medium group-hover:bg-gradient-premium group-hover:bg-clip-text group-hover:text-transparent transition-all duration-300">{query}</div>
-                        <div className="text-xs text-muted-foreground mt-1 transition-colors duration-300 group-hover:text-foreground">
-                          #{index + 1} trending
-                        </div>
-                      </div>
+                      <Search className="h-4 w-4 mr-2 text-primary" />
+                      <span className="text-sm">{query}</span>
                     </Button>
                   ))}
-                </div>
-              </div>
-            </Card>
-          </TabsContent>
-
-          {/* Suggestions Tab */}
-          <TabsContent value="suggestions" className="space-y-6 animate-fade-in">
-            {suggestedSearches.map((categoryData, index) => (
-              <Card 
-                key={index} 
-                className="relative p-6 animate-fade-in border-2 border-border/40 shadow-aurora bg-gradient-to-br from-card to-card/95 backdrop-blur-lg overflow-hidden hover:shadow-glow hover:border-primary/30 transition-all duration-500 hover:scale-[1.01]" 
-                style={{ animationDelay: `${index * 0.1}s` }}
-              >
-                <div className="absolute inset-0 bg-gradient-mesh opacity-20 pointer-events-none transition-opacity duration-500"></div>
-                <div className="relative z-10">
-                  <h3 className="text-lg font-semibold mb-4 bg-gradient-premium bg-clip-text text-transparent transition-all duration-300">{categoryData.category}</h3>
-                  <div className="grid sm:grid-cols-2 gap-3">
-                    {categoryData.queries.map((query, queryIndex) => (
-                      <Button
-                        key={queryIndex}
-                        variant="ghost"
-                        className="justify-start h-auto p-3 text-left hover:bg-gradient-to-r hover:from-primary/10 hover:to-accent/10 hover:scale-105 hover:-translate-y-0.5 transition-all duration-300 rounded-xl border border-transparent hover:border-primary/20 group"
-                        onClick={() => {
-                          addRecentSearch(query);
-                          window.dispatchEvent(new CustomEvent('nova:new-chat'));
-                          navigate('/', { state: { initialQuery: query } });
-                        }}
-                      >
-                        <Search className="h-4 w-4 mr-2 text-primary transition-transform duration-300 group-hover:rotate-12 group-hover:scale-110" />
-                        <span className="transition-colors duration-300 group-hover:text-primary">{query}</span>
-                      </Button>
-                    ))}
-                  </div>
                 </div>
               </Card>
             ))}
