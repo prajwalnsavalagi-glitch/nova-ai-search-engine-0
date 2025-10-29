@@ -31,7 +31,7 @@ export interface SearchSettingsData {
 }
 
 const DEFAULT_SETTINGS: SearchSettingsData = {
-  model: 'google/gemini-2.5-flash',
+  model: 'auto-lovable',
   systemPrompt: 'You are NOVA, a helpful search assistant created by Prajwal Savalagi and designed by Pranav Hallur that provides accurate, comprehensive answers based on web search results. Focus on clarity, accuracy, and citing sources. Use emojis occasionally but avoid excessive hashtags.',
   temperature: 0.3,
   maxTokens: 32000,

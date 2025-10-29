@@ -25,6 +25,13 @@ export const AVAILABLE_MODELS: OpenRouterModel[] = [
     contextLength: 1000000,
   },
   {
+    id: 'google/gemini-2.5-flash-image-preview:free',
+    name: 'Nano Banana (Image Gen)',
+    description: 'Creates images from text prompts (Free)',
+    isFree: true,
+    contextLength: 32000,
+  },
+  {
     id: 'meta-llama/llama-3.3-70b-instruct',
     name: 'Llama 3.3 70B',
     description: 'Meta\'s open source powerhouse',

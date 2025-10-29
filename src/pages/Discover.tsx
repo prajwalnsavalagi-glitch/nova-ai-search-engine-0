@@ -167,6 +167,12 @@ export default function Discover() {
 
   return (
     <div className="min-h-screen bg-background relative overflow-x-hidden">
+      {/* Animated Background */}
+      <div className="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-gradient-glow-orb opacity-20 blur-3xl animate-float"></div>
+        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-gradient-glow-orb opacity-15 blur-3xl animate-float" style={{ animationDelay: '2s' }}></div>
+      </div>
+      
       {/* Theme Toggle */}
       <div className="fixed top-4 right-4 z-50">
         <ThemeToggle />
@@ -188,20 +194,20 @@ export default function Discover() {
         </div>
 
         <div className="text-center space-y-3 sm:space-y-4">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold bg-gradient-premium bg-clip-text text-transparent animate-gradient">
             Discover
           </h1>
-          <p className="text-sm sm:text-base md:text-lg text-muted-foreground px-4">
+          <p className="text-sm sm:text-base md:text-lg text-muted-foreground px-4 max-w-2xl mx-auto">
             Latest news, trends, and discoveries. Auto-refreshed every 5 minutes.
           </p>
         </div>
 
         {/* Content Tabs */}
         <Tabs defaultValue="news" className="space-y-4 sm:space-y-6">
-          <TabsList className="grid w-full grid-cols-3 bg-card border border-border p-1">
+          <TabsList className="grid w-full grid-cols-3 bg-card/80 backdrop-blur-sm border border-border/50 p-1 rounded-xl shadow-sm">
             <TabsTrigger 
               value="news" 
-              className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+              className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm data-[state=active]:bg-gradient-premium data-[state=active]:text-white data-[state=active]:shadow-glow rounded-lg transition-all"
             >
               <Newspaper className="h-3 w-3 sm:h-4 sm:w-4" />
               <span className="hidden sm:inline">Latest News</span>
@@ -209,14 +215,14 @@ export default function Discover() {
             </TabsTrigger>
             <TabsTrigger 
               value="trending" 
-              className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+              className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm data-[state=active]:bg-gradient-premium data-[state=active]:text-white data-[state=active]:shadow-glow rounded-lg transition-all"
             >
               <TrendingUp className="h-3 w-3 sm:h-4 sm:w-4" />
               Trending
             </TabsTrigger>
             <TabsTrigger 
               value="suggestions" 
-              className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+              className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm data-[state=active]:bg-gradient-premium data-[state=active]:text-white data-[state=active]:shadow-glow rounded-lg transition-all"
             >
               <Zap className="h-3 w-3 sm:h-4 sm:w-4" />
               <span className="hidden sm:inline">Suggestions</span>
@@ -264,24 +270,25 @@ export default function Discover() {
                 news.map((newsItem, index) => (
                   <Card 
                     key={index} 
-                    className="overflow-hidden hover:shadow-lg hover:border-primary/30 transition-all cursor-pointer group"
+                    className="overflow-hidden hover:shadow-xl hover:shadow-primary/20 hover:border-primary/40 hover:-translate-y-1 transition-all duration-300 cursor-pointer group bg-card/80 backdrop-blur-sm"
                     onClick={() => handleNewsClick(newsItem)}
                   >
                     {/* Image */}
                     {newsItem.image ? (
-                      <div className="relative aspect-video overflow-hidden bg-muted">
+                      <div className="relative aspect-video overflow-hidden bg-gradient-subtle">
                         <img 
                           src={newsItem.image} 
                           alt={newsItem.title}
-                          className="w-full h-full object-cover"
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                           onError={(e) => {
                             e.currentTarget.style.display = 'none';
                           }}
                         />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
                       </div>
                     ) : (
-                      <div className="relative aspect-video overflow-hidden bg-muted">
-                        <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="relative aspect-video overflow-hidden bg-gradient-subtle">
+                        <div className="absolute inset-0 flex items-center justify-center bg-gradient-mesh">
                           <Globe className="h-12 w-12 text-muted-foreground/20" />
                         </div>
                       </div>
@@ -329,10 +336,10 @@ export default function Discover() {
 
           {/* Trending Tab */}
           <TabsContent value="trending" className="space-y-4 sm:space-y-6">
-            <Card className="p-4 sm:p-6">
+            <Card className="p-4 sm:p-6 bg-card/80 backdrop-blur-sm border-border/50 shadow-md">
               <h3 className="text-lg sm:text-xl font-semibold mb-4 flex items-center gap-2">
-                <div className="h-8 w-8 sm:h-9 sm:w-9 rounded-xl bg-primary/10 flex items-center justify-center">
-                  <TrendingUp className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
+                <div className="h-8 w-8 sm:h-9 sm:w-9 rounded-xl bg-gradient-premium flex items-center justify-center shadow-glow">
+                  <TrendingUp className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
                 </div>
                 <span>Trending Searches</span>
               </h3>
@@ -365,7 +372,7 @@ export default function Discover() {
             {suggestedSearches.map((categoryData, index) => (
               <Card 
                 key={index} 
-                className="p-4 sm:p-6"
+                className="p-4 sm:p-6 bg-card/80 backdrop-blur-sm border-border/50 shadow-md hover:shadow-lg transition-shadow"
               >
                 <h3 className="text-base sm:text-lg font-semibold mb-4">{categoryData.category}</h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">

@@ -105,6 +105,9 @@ export function SearchInterface() {
       setQuery(searchQuery);
       setIsSearching(true);
       setHasSearched(true);
+      // Clear previous sources and images before new search
+      setCurrentSources([]);
+      setCurrentImages([]);
       // Push user message and a temporary assistant placeholder for loading UI
       setConversationMessages(prev => [
         ...prev,

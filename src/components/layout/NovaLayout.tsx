@@ -4,9 +4,17 @@ import { SearchInterface } from "@/components/search/SearchInterface";
 import { ThemeToggle } from "./ThemeToggle";
 import { Menu } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { useEffect } from "react";
+import { applyCustomization, loadAICustomization } from "@/components/chat/AICustomization";
 
 export function NovaLayout() {
   const isMobile = useIsMobile();
+  
+  // Apply saved customization on mount
+  useEffect(() => {
+    const savedCustomization = loadAICustomization();
+    applyCustomization(savedCustomization);
+  }, []);
   
   return (
     <SidebarProvider defaultOpen={!isMobile}>
