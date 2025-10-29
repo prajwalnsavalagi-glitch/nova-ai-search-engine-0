@@ -12,7 +12,6 @@ import {
   Bot,
   Settings,
   X,
-  Palette,
 } from "lucide-react";
 import { NavLink, useLocation } from "react-router-dom";
 
@@ -35,14 +34,12 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { SearchSettings, loadSearchSettings, saveSearchSettings, type SearchSettingsData } from "@/components/search/SearchSettings";
 import { ChatBotSettings, loadChatBotSettings, saveChatBotSettings, type ChatBotSettingsData } from "@/components/chat/ChatBotSettings";
-import { AICustomization } from "@/components/chat/AICustomization";
 import { useToast } from "@/hooks/use-toast";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 const navigationItems = [
   { title: "Home", url: "/", icon: Home },
   { title: "Discover", url: "/discover", icon: Compass },
-  { title: "Customize", url: "#", icon: Palette, action: 'customize' },
 ];
 
 export function NovaSidebar() {
@@ -57,7 +54,6 @@ export function NovaSidebar() {
   const [searchSettings, setSearchSettings] = useState<SearchSettingsData>(loadSearchSettings());
   const [showSearchSettings, setShowSearchSettings] = useState(false);
   const [showChatBotSettings, setShowChatBotSettings] = useState(false);
-  const [showAICustomization, setShowAICustomization] = useState(false);
   const [chatBotSettings, setChatBotSettings] = useState<ChatBotSettingsData>(loadChatBotSettings());
   const [showRecentSearches, setShowRecentSearches] = useState(false);
   const [recentSearches, setRecentSearches] = useState<string[]>([]);
@@ -197,32 +193,19 @@ export function NovaSidebar() {
             <SidebarMenu>
               {navigationItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild={!item.action}>
-                    {item.action ? (
-                      <button
-                        onClick={() => setShowAICustomization(true)}
-                        className={cn(
-                          "flex items-center gap-3 px-3 py-2 rounded-lg transition-colors text-sm w-full",
-                          "text-muted-foreground hover:bg-secondary/50 hover:text-foreground"
-                        )}
-                      >
-                        <item.icon className="h-4 w-4 md:h-5 md:w-5" />
-                        {!collapsed && <span>{item.title}</span>}
-                      </button>
-                    ) : (
-                      <NavLink 
-                        to={item.url} 
-                        className={cn(
-                          "flex items-center gap-3 px-3 py-2 rounded-lg transition-colors text-sm",
-                          isActive(item.url)
-                            ? "bg-secondary text-foreground font-medium" 
-                            : "text-muted-foreground hover:bg-secondary/50 hover:text-foreground"
-                        )}
-                      >
-                        <item.icon className="h-4 w-4 md:h-5 md:w-5" />
-                        {!collapsed && <span>{item.title}</span>}
-                      </NavLink>
-                    )}
+                  <SidebarMenuButton asChild>
+                    <NavLink 
+                      to={item.url} 
+                      className={cn(
+                        "flex items-center gap-3 px-3 py-2 rounded-lg transition-colors text-sm",
+                        isActive(item.url)
+                          ? "bg-secondary text-foreground font-medium" 
+                          : "text-muted-foreground hover:bg-secondary/50 hover:text-foreground"
+                      )}
+                    >
+                      <item.icon className="h-4 w-4 md:h-5 md:w-5" />
+                      {!collapsed && <span>{item.title}</span>}
+                    </NavLink>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}

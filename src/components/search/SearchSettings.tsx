@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Settings, Key, ExternalLink } from "lucide-react";
+import { Settings, Key, ExternalLink, Palette } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -20,6 +20,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { AICustomization } from "@/components/chat/AICustomization";
 
 export interface SearchSettingsData {
   model: string;
@@ -98,6 +99,7 @@ interface SearchSettingsProps {
 export function SearchSettings({ open, onOpenChange, settings, onSettingsChange }: SearchSettingsProps) {
   const [localSettings, setLocalSettings] = useState(settings);
   const [selectedProvider, setSelectedProvider] = useState<string>('');
+  const [showAICustomization, setShowAICustomization] = useState(false);
 
   // Sync local state when dialog opens
   useEffect(() => {
@@ -141,9 +143,10 @@ export function SearchSettings({ open, onOpenChange, settings, onSettingsChange 
         </DialogHeader>
 
         <Tabs defaultValue="model" className="w-full">
-          <TabsList className="grid w-full grid-cols-2">
+          <TabsList className="grid w-full grid-cols-3">
             <TabsTrigger value="model">Model Settings</TabsTrigger>
             <TabsTrigger value="api">API Keys</TabsTrigger>
+            <TabsTrigger value="customize">Customize</TabsTrigger>
           </TabsList>
 
           <TabsContent value="model" className="space-y-6 py-4">
@@ -327,7 +330,32 @@ export function SearchSettings({ open, onOpenChange, settings, onSettingsChange 
               </p>
             </div>
           </TabsContent>
+
+          <TabsContent value="customize" className="space-y-6 py-4">
+            <div className="space-y-4">
+              <div className="flex items-center gap-2 mb-4">
+                <Palette className="h-5 w-5 text-primary" />
+                <h3 className="text-lg font-semibold">AI Interface Customization</h3>
+              </div>
+              <p className="text-sm text-muted-foreground mb-4">
+                Personalize your AI interface with custom themes, fonts, and colors to match your preferences.
+              </p>
+              <Button 
+                onClick={() => setShowAICustomization(true)}
+                className="w-full"
+                variant="outline"
+              >
+                <Palette className="h-4 w-4 mr-2" />
+                Open Customization Settings
+              </Button>
+            </div>
+          </TabsContent>
         </Tabs>
+
+        <AICustomization
+          open={showAICustomization}
+          onOpenChange={setShowAICustomization}
+        />
 
         <div className="flex justify-between pt-4 border-t">
           <Button variant="outline" onClick={handleReset}>
